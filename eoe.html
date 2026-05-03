@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ITAT · Panel EOE</title>
+  <!--
+  ════════════════════════════════════════════════════
+   ITAT — Interfaz Tecnológica de Alerta Temprana
+   Vista: EOE (privada)  |  eoe.html
+   Proyecto educativo · Gabriela Roldan · 2026
+  ════════════════════════════════════════════════════
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300&display=swap" rel="stylesheet" />
+
+  <style>
+  /* ═══════════════════════════════════════════════════════
+     TOKENS DE DISEÑO
+  ═══════════════════════════════════════════════════════ */
+  :root {
+    --viola:      #6c35de;
+    --viola-dk:   #4a1fa8;
+    --viola-lg:   #9b72f0;
+    --lila:       #b89ef8;
+    --lila-pale:  #f0ebff;
+    --celeste:    #38bdf8;
+    --teal:       #14b8a6;
+    --teal-pale:  #f0fdf9;
+    --lav:        #ede9fe;
+
+    --ok:        #059669;  --ok-bg:   #ecfdf5; --ok-ring:   #6ee7b7;
+    --warn:      #b45309;  --warn-bg: #fffbeb; --warn-ring: #fcd34d;
+    --crit:      #be185d;  --crit-bg: #fdf2f8; --crit-ring: #f9a8d4;
+
+    --bg:       #f3f0fc;
+    --surface:  #ffffff;
+    --border:   #e4dff8;
+    --txt:      #2e2750;
+    --txt-md:   #5b5380;
+    --txt-lt:   #9c94c4;
+
+    --f-ui:   'Outfit', sans-serif;
+    --f-disp: 'Fraunces', serif;
+
+    --r-xs:  8px;  --r-sm: 12px;
+    --r-md: 16px;  --r-lg: 22px;
+
+    --sh-card: 0 1px 3px rgba(108,53,222,.06), 0 4px 16px rgba(108,53,222,.08);
+    --sh-lift: 0 8px 28px rgba(108,53,222,.17), 0 2px 6px rgba(108,53,222,.09);
+    --sh-btn:  0 4px 0 rgba(58,20,130,.60), 0 2px 12px rgba(108,53,222,.28);
+    --sh-btn-h:0 6px 0 rgba(58,20,130,.60), 0 4px 18px rgba(108,53,222,.40);
+    --sh-btn-a:0 1px 0 rgba(58,20,130,.60), 0 0   4px rgba(108,53,222,.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--f-ui);
+    background: var(--bg);
+    color: var(--txt);
+    min-height: 100vh;
+    background-image: radial-gradient(circle at 1px 1px, rgba(108,53,222,.05) 1px, transparent 0);
+    background-size: 26px 26px;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     PANTALLA DE LOGIN
+  ═══════════════════════════════════════════════════════ */
+  #pantalla-login {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(148deg, #1e0d5c 0%, var(--viola-dk) 38%, var(--viola) 68%, #4a90d9 100%);
+    background-size: 200% 200%;
+    padding: 24px;
+    position: relative; overflow: hidden;
+  }
+
+  /* Orbe turquesa */
+  #pantalla-login::before {
+    content: '';
+    position: absolute; width: 420px; height: 420px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(56,189,248,.20) 0%, transparent 65%);
+    top: -160px; right: -100px; pointer-events: none;
+  }
+  /* Orbe lila flotante */
+  #pantalla-login::after {
+    content: '';
+    position: absolute; width: 280px; height: 280px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,158,248,.20) 0%, transparent 65%);
+    bottom: -110px; left: -60px; pointer-events: none;
+    animation: deriva 9s ease-in-out infinite;
+  }
+  @keyframes deriva { 0%,100%{transform:translate(0,0)} 50%{transform:translate(12px,-16px)} }
+
+  /* Malla de puntos login */
+  .login-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: 20px 20px; pointer-events: none;
+  }
+
+  /* Caja de login */
+  .login-box {
+    background: rgba(255,255,255,.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.6);
+    border-radius: 26px;
+    padding: 42px 36px 36px;
+    width: 100%; max-width: 400px;
+    box-shadow: 0 32px 80px rgba(30,13,92,.35), 0 4px 16px rgba(30,13,92,.20);
+    text-align: center;
+    position: relative; z-index: 1;
+    animation: rise .52s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes rise { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+  /* Logo en login */
+  .login-logo-wrap {
+    width: 88px; height: 88px;
+    background: linear-gradient(148deg, var(--lila-pale), var(--teal-pale));
+    border: 2px solid var(--border);
+    border-radius: var(--r-md);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(108,53,222,.18);
+    animation: latir 3.5s ease-in-out infinite;
+  }
+  @keyframes latir { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+
+  .login-logo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .login-logo-fb { display: none; font-size: 2.6rem; line-height: 1; }
+
+  .login-box h1 {
+    font-family: var(--f-disp); font-size: 1.38rem; font-weight: 400; color: var(--viola-dk);
+    margin-bottom: 4px;
+  }
+  .login-sub { font-size: .82rem; color: var(--txt-lt); margin-bottom: 28px; line-height: 1.5; }
+
+  .login-campo { text-align: left; margin-bottom: 14px; }
+  .login-campo label { display: block; font-size: .82rem; font-weight: 700; color: var(--txt-md); margin-bottom: 5px; }
+  .login-campo input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: var(--r-sm);
+    padding: 11px 14px; font-family: var(--f-ui); font-size: .93rem; color: var(--txt);
+    background: var(--lila-pale); outline: none;
+    transition: border-color .18s, box-shadow .18s;
+  }
+  .login-campo input:focus { border-color: var(--viola); box-shadow: 0 0 0 3px rgba(108,53,222,.14); }
+
+  .login-error { color: var(--crit); font-size: .82rem; font-weight: 600; margin-bottom: 12px; display: none; }
+
+  /* Botón login — físico */
+  .btn-login {
+    width: 100%;
+    background: linear-gradient(135deg, var(--viola-dk) 0%, var(--viola) 50%, #4a90d9 100%);
+    color: #fff; border: none; border-radius: var(--r-sm);
+    padding: 13px; font-family: var(--f-ui); font-size: .97rem; font-weight: 800;
+    cursor: pointer; position: relative; overflow: hidden;
+    box-shadow: var(--sh-btn);
+    transition: box-shadow .10s, transform .10s, filter .18s;
+  }
+  .btn-login::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.12) 0%, transparent 50%);
+    border-radius: inherit; pointer-events: none;
+  }
+  .btn-login::after {
+    content: ''; position: absolute; top: 0; left: -80%;
+    width: 55%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.20), transparent);
+    transform: skewX(-18deg); transition: left .55s ease; pointer-events: none;
+  }
+  .btn-login:hover::after { left: 130%; }
+  .btn-login:hover { box-shadow: var(--sh-btn-h); transform: translateY(-2px); filter: brightness(1.07); }
+  .btn-login:active { box-shadow: var(--sh-btn-a); transform: translateY(4px); filter: brightness(.96); }
+
+  .login-nota { font-size: .73rem; color: var(--txt-lt); margin-top: 16px; line-height: 1.65; }
+
+  /* ═══════════════════════════════════════════════════════
+     APP
+  ═══════════════════════════════════════════════════════ */
+  #app { display: none; min-height: 100vh; }
+
+  /* ── Topbar ── */
+  .topbar {
+    background: linear-gradient(148deg, #1e0d5c 0%, var(--viola-dk) 38%, var(--viola) 68%, #4a90d9 100%);
+    color: #fff; height: 60px;
+    display: flex; align-items: center; padding: 0 22px; gap: 14px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 20px rgba(30,13,92,.30);
+    overflow: hidden;
+  }
+  /* Orbe decorativo topbar */
+  .topbar::after {
+    content: ''; position: absolute;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(56,189,248,.18) 0%, transparent 65%);
+    right: 40px; top: -80px; pointer-events: none;
+  }
+
+  .top-logo-wrap {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28);
+    border-radius: var(--r-xs); display: flex; align-items: center; justify-content: center;
+    overflow: hidden; flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .top-logo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .top-logo-fb { display: none; font-size: 1.2rem; line-height: 1; }
+
+  .top-info { position: relative; z-index: 1; }
+  .top-info h1 { font-family: var(--f-disp); font-size: 1.05rem; font-weight: 400; font-style: italic; }
+  .top-info p  { font-size: .71rem; opacity: .68; }
+
+  .top-space { flex: 1; }
+
+  .btn-salir {
+    background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.28);
+    color: #fff; border-radius: var(--r-xs);
+    padding: 6px 14px; font-family: var(--f-ui); font-size: .78rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+    transition: background .18s, transform .12s;
+    position: relative; z-index: 1;
+  }
+  .btn-salir:hover { background: rgba(255,255,255,.28); transform: translateY(-1px); }
+  .btn-salir:active { transform: translateY(1px); }
+
+  /* ── Dashboard ── */
+  .dash { max-width: 1280px; margin: 0 auto; padding: 26px 20px 60px; }
+
+  /* Banner demo */
+  .banner-demo {
+    background: linear-gradient(135deg, var(--warn-bg) 0%, #fff 100%);
+    border: 1.5px solid var(--warn-ring);
+    border-radius: var(--r-md); padding: 13px 18px;
+    font-size: .82rem; color: #78350f; margin-bottom: 22px; line-height: 1.55;
+  }
+  .banner-demo strong { font-weight: 800; }
+  .banner-demo code { background: rgba(0,0,0,.07); border-radius: 4px; padding: 1px 5px; font-size: .80rem; }
+
+  /* ── Stats ── */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 26px; }
+
+  .stat {
+    background: var(--surface);
+    border-radius: var(--r-md); padding: 18px 16px 15px;
+    box-shadow: var(--sh-card);
+    border-top: 4px solid var(--border);
+    border: 1px solid rgba(228,223,248,.6);
+    border-top-width: 4px;
+    transition: transform .20s, box-shadow .20s;
+    position: relative; overflow: hidden;
+  }
+  /* Brillo esquina superior */
+  .stat::after {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 80px; height: 80px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(108,53,222,.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .stat:hover { transform: translateY(-3px); box-shadow: var(--sh-lift); }
+
+  .stat.critica { border-top-color: var(--crit); }
+  .stat.media   { border-top-color: var(--warn); }
+  .stat.baja    { border-top-color: var(--ok); }
+  .stat.sinrev  { border-top-color: var(--viola); }
+
+  .stat-lbl { font-size: .69rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--txt-lt); margin-bottom: 8px; }
+  .stat-num { font-size: 2.2rem; font-weight: 800; line-height: 1; color: var(--viola-dk); }
+  .stat.critica .stat-num { color: var(--crit); }
+  .stat.media   .stat-num { color: var(--warn); }
+  .stat.baja    .stat-num { color: var(--ok); }
+  .stat.sinrev  .stat-num { color: var(--viola); }
+  .stat-desc { font-size: .74rem; color: var(--txt-lt); margin-top: 4px; }
+
+  /* ── Barra herramientas ── */
+  .barra {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px;
+  }
+  .barra h2 { font-size: 1rem; font-weight: 800; color: var(--viola-dk); margin-right: auto; }
+
+  .filtro {
+    border: 1.5px solid var(--border); border-radius: var(--r-xs);
+    padding: 7px 12px; font-family: var(--f-ui); font-size: .82rem; color: var(--txt);
+    background: var(--surface); cursor: pointer; outline: none;
+    appearance: none; -webkit-appearance: none;
+    transition: border-color .18s;
+  }
+  .filtro:focus { border-color: var(--viola); }
+
+  /* Botón actualizar */
+  .btn-actualizar {
+    background: linear-gradient(135deg, var(--lila-pale) 0%, var(--teal-pale) 100%);
+    border: 1.5px solid var(--border); color: var(--viola-dk);
+    border-radius: var(--r-xs); padding: 7px 16px;
+    font-family: var(--f-ui); font-size: .82rem; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; gap: 6px;
+    box-shadow: 0 3px 0 rgba(108,53,222,.14);
+    transition: box-shadow .10s, transform .10s, background .18s;
+  }
+  .btn-actualizar:hover { background: var(--lav); transform: translateY(-2px); box-shadow: 0 5px 0 rgba(108,53,222,.18); }
+  .btn-actualizar:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(108,53,222,.14); }
+
+  /* Spinner dashboard */
+  #estado-carga { text-align: center; padding: 40px 20px; color: var(--txt-lt); font-size: .90rem; display: none; }
+  .spinner-d {
+    width: 28px; height: 28px;
+    border: 3px solid var(--lila-pale); border-top-color: var(--viola);
+    border-radius: 50%; animation: spin .8s linear infinite;
+    margin: 0 auto 14px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Lista alertas ── */
+  #lista-alertas { display: flex; flex-direction: column; gap: 16px; }
+
+  .estado-vacio {
+    background: var(--surface); border-radius: var(--r-lg);
+    padding: 50px 24px; text-align: center;
+    box-shadow: var(--sh-card); color: var(--txt-lt);
+    border: 1px solid rgba(228,223,248,.6);
+  }
+  .vacio-ico { font-size: 2.4rem; margin-bottom: 12px; }
+
+  /* ── Tarjeta de alerta ── */
+  .tarjeta {
+    background: var(--surface);
+    border-radius: var(--r-lg);
+    box-shadow: var(--sh-card);
+    overflow: hidden;
+    border: 1px solid rgba(228,223,248,.6);
+    /* Borde izquierdo de color según urgencia */
+    border-left: 5px solid var(--border);
+    transition: box-shadow .22s, transform .20s;
+  }
+  .tarjeta:hover { box-shadow: var(--sh-lift); transform: translateY(-2px); }
+
+  .tarjeta.urg-bajo    { border-left-color: var(--ok); }
+  .tarjeta.urg-medio   { border-left-color: var(--warn); }
+  .tarjeta.urg-critico {
+    border-left-color: var(--crit);
+    animation: pulso 2.8s ease-in-out infinite;
+  }
+  @keyframes pulso {
+    0%,100% { box-shadow: var(--sh-card); }
+    50%      { box-shadow: 0 0 0 4px rgba(190,24,93,.14), var(--sh-card); }
+  }
+
+  /* Header tarjeta */
+  .tar-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; padding: 16px 18px 13px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tar-id-nombre { display: flex; align-items: center; gap: 10px; }
+
+  .tar-id {
+    font-size: .70rem; font-weight: 800; color: var(--txt-lt);
+    background: var(--lila-pale); border-radius: 6px; padding: 3px 9px;
+    border: 1px solid var(--border);
+  }
+  .tar-nombre { font-size: 1rem; font-weight: 800; color: var(--txt); }
+  .tar-meta   { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .tar-fecha  { font-size: .75rem; color: var(--txt-lt); }
+
+  /* Badges */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 100px;
+    font-size: .71rem; font-weight: 800; white-space: nowrap;
+  }
+  .badge-bajo    { background: var(--ok-bg);   color: var(--ok);   border: 1px solid var(--ok-ring); }
+  .badge-medio   { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-ring); }
+  .badge-critico { background: var(--crit-bg); color: var(--crit); border: 1px solid var(--crit-ring); }
+  .badge-recibido{ background: var(--lila-pale); color: var(--txt-md); border: 1px solid var(--border); }
+  .badge-revision{ background: var(--lav);      color: var(--viola-dk); border: 1px solid var(--lila); }
+  .badge-derivado{ background: #f0fdf4;         color: #166534; border: 1px solid #bbf7d0; }
+  .badge-cerrado { background: var(--ok-bg);    color: var(--ok); border: 1px solid var(--ok-ring); }
+
+  /* Cuerpo tarjeta */
+  .tar-body { padding: 16px 18px; }
+
+  .datos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 12px; margin-bottom: 14px; }
+  .dato { display: flex; flex-direction: column; gap: 3px; }
+  .dato-k { font-size: .67rem; font-weight: 800; text-transform: uppercase; letter-spacing: .9px; color: var(--viola-lg); }
+  .dato-v { font-size: .88rem; color: var(--txt); font-weight: 600; }
+  .si-contacto { color: var(--viola-dk); font-weight: 700; }
+  .no-contacto { color: var(--txt-lt); }
+
+  /* Descripción */
+  .desc-bloque {
+    background: linear-gradient(135deg, var(--lila-pale) 0%, var(--teal-pale) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm); padding: 13px; margin-bottom: 0;
+  }
+  .desc-k { font-size: .67rem; font-weight: 800; text-transform: uppercase; letter-spacing: .9px; color: var(--viola-lg); margin-bottom: 7px; }
+  .desc-v { font-size: .89rem; color: var(--txt); line-height: 1.62; }
+
+  /* Controles EOE */
+  .tar-controls {
+    border-top: 1px solid var(--border);
+    padding: 15px 18px;
+    background: linear-gradient(135deg, rgba(240,235,255,.35) 0%, rgba(240,253,249,.35) 100%);
+  }
+  .ctrl-title {
+    font-size: .67rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--viola); margin-bottom: 12px;
+  }
+  .ctrl-row { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+
+  .estado-select {
+    border: 1.5px solid var(--border); border-radius: var(--r-xs);
+    padding: 9px 12px; font-family: var(--f-ui); font-size: .85rem; color: var(--txt);
+    background: var(--surface); cursor: pointer; outline: none;
+    min-width: 170px; appearance: none; -webkit-appearance: none;
+    transition: border-color .18s;
+    box-shadow: 0 2px 0 rgba(108,53,222,.12);
+  }
+  .estado-select:focus { border-color: var(--viola); }
+
+  .obs-area {
+    width: 100%; border: 1.5px solid var(--border); border-radius: var(--r-xs);
+    padding: 10px 12px; font-family: var(--f-ui); font-size: .87rem; color: var(--txt);
+    resize: vertical; min-height: 80px; outline: none;
+    background: var(--surface); margin-top: 10px; line-height: 1.5;
+    transition: border-color .18s, box-shadow .18s;
+  }
+  .obs-area:focus { border-color: var(--viola); box-shadow: 0 0 0 3px rgba(108,53,222,.12); }
+
+  /* Botón guardar — físico */
+  .btn-guardar {
+    background: linear-gradient(135deg, var(--viola-dk) 0%, var(--viola) 55%, #4a8fd4 100%);
+    color: #fff; border: none; border-radius: var(--r-xs);
+    padding: 9px 18px; font-family: var(--f-ui); font-size: .84rem; font-weight: 800;
+    cursor: pointer; margin-top: 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: var(--sh-btn); position: relative; overflow: hidden;
+    transition: box-shadow .10s, transform .10s, filter .18s;
+  }
+  .btn-guardar::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.12) 0%, transparent 50%);
+    border-radius: inherit; pointer-events: none;
+  }
+  .btn-guardar:hover { box-shadow: var(--sh-btn-h); transform: translateY(-2px); filter: brightness(1.07); }
+  .btn-guardar:active { box-shadow: var(--sh-btn-a); transform: translateY(3px); filter: brightness(.96); }
+  .btn-guardar:disabled { background: var(--border); box-shadow: 0 2px 0 #c8c4e0; cursor: not-allowed; filter: none; transform: none; }
+
+  .feedback-ok { font-size: .78rem; color: var(--ok); font-weight: 700; display: none; margin-top: 6px; }
+
+  /* Footer */
+  .dash-footer { text-align: center; margin-top: 40px; font-size: .73rem; color: var(--txt-lt); line-height: 1.75; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .dash { padding: 18px 12px 50px; }
+    .tar-header { flex-direction: column; align-items: flex-start; }
+    .ctrl-row { flex-direction: column; }
+    .estado-select { min-width: 100%; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="pantalla-login">
+  <div class="login-dots"></div>
+  <div class="login-box">
+
+    <div class="login-logo-wrap">
+      <img class="login-logo" src="itap.jfif" alt="Logo ITAT"
+        onerror="this.style.display='none'; this.parentElement.querySelector('.login-logo-fb').style.display='block';" />
+      <span class="login-logo-fb" aria-hidden="true">🛡️</span>
+    </div>
+
+    <h1>Panel EOE · ITAT</h1>
+    <p class="login-sub">Acceso exclusivo para el<br />Equipo de Orientación Escolar</p>
+
+    <div class="login-campo">
+      <label for="login-usuario">Usuario</label>
+      <input type="text" id="login-usuario" placeholder="usuario@escuela.edu.ar" autocomplete="username" />
+    </div>
+    <div class="login-campo">
+      <label for="login-clave">Contraseña</label>
+      <input type="password" id="login-clave" placeholder="••••••••••" autocomplete="current-password" />
+    </div>
+
+    <p class="login-error" id="login-error" role="alert">❌ Usuario o contraseña incorrectos.</p>
+
+    <button class="btn-login" id="btn-login">Ingresar</button>
+
+    <p class="login-nota">
+      🔒 Área restringida · Solo personal del EOE autorizado<br />
+      Prototipo educativo · ITAT · Gabriela Roldan · 2026
+    </p>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="top-logo-wrap">
+      <img class="top-logo" src="itap.jfif" alt="ITAT"
+        onerror="this.style.display='none'; this.parentElement.querySelector('.top-logo-fb').style.display='block';" />
+      <span class="top-logo-fb" aria-hidden="true">🛡️</span>
+    </div>
+    <div class="top-info">
+      <h1>ITAT · Panel EOE</h1>
+      <p>Interfaz Tecnológica de Alerta Temprana</p>
+    </div>
+    <div class="top-space"></div>
+    <button class="btn-salir" id="btn-cerrar">Cerrar sesión</button>
+  </header>
+
+  <!-- Dashboard -->
+  <main class="dash">
+
+    <div class="banner-demo" id="banner-demo">
+      <strong>⚠️ Modo demostración:</strong>
+      Los datos mostrados son de muestra. Para conectar con Google Sheets real, reemplazá
+      <code>WEB_APP_URL</code> y <code>EOE_TOKEN</code>, y descomentá el fetch real en <code>cargarAlertas()</code>.
+    </div>
+
+    <!-- Stats -->
+    <section class="stats" id="stats" aria-label="Resumen de alertas"></section>
+
+    <!-- Barra -->
+    <div class="barra">
+      <h2>📋 Alertas recibidas</h2>
+      <select class="filtro" id="filtro-urgencia" aria-label="Filtrar por urgencia">
+        <option value="">Urgencia: Todas</option>
+        <option value="Bajo">🟢 Bajo</option>
+        <option value="Medio">🟡 Medio</option>
+        <option value="Crítico">🔴 Crítico</option>
+      </select>
+      <select class="filtro" id="filtro-estado" aria-label="Filtrar por estado">
+        <option value="">Estado: Todos</option>
+        <option value="Recibido">Recibido</option>
+        <option value="En revisión">En revisión</option>
+        <option value="Derivado">Derivado</option>
+        <option value="Cerrado">Cerrado</option>
+      </select>
+      <button class="btn-actualizar" id="btn-actualizar" onclick="cargarAlertas()">🔄 Actualizar</button>
+    </div>
+
+    <!-- Carga -->
+    <div id="estado-carga">
+      <div class="spinner-d"></div>
+      Cargando alertas…
+    </div>
+
+    <!-- Lista -->
+    <div id="lista-alertas" role="list" aria-label="Lista de alertas"></div>
+
+    <footer class="dash-footer">
+      ITAT · Panel del Equipo de Orientación Escolar<br />
+      ⚠️ Información confidencial · Solo para uso institucional del EOE<br />
+      Proyecto educativo · Gabriela Roldan · 2026
+    </footer>
+
+  </main>
+</div>
+
+<!-- ══════════ JAVASCRIPT ══════════ -->
+<script>
+  /* ─── CONFIGURACIÓN — REEMPLAZAR ANTES DE PUBLICAR ─── */
+  const WEB_APP_URL  = 'https://script.google.com/macros/s/REEMPLAZAR_CON_TU_DEPLOYMENT_ID/exec';
+  const EOE_TOKEN    = 'REEMPLAZAR_CON_TU_TOKEN_SECRETO';
+  const EOE_PASSWORD = 'itat2026';
+
+  /* ─── DATOS DE DEMO ─── */
+  const DEMO = [
+    { id:1, fechaHora:'02/05/2026 08:14', nombre:'Lucía M.',     curso:'3° año B', tipo:'Malestar emocional',      urgencia:'Crítico', estado:'En revisión', solicitaContacto:'Sí', descripcion:'Me siento muy sola últimamente. No puedo concentrarme en nada y ya no me dan ganas de venir al colegio.', obs:'' },
+    { id:2, fechaHora:'02/05/2026 09:47', nombre:'Tomás G.',     curso:'1° año A', tipo:'Ciberbullying',            urgencia:'Medio',   estado:'Recibido',    solicitaContacto:'No', descripcion:'Me están mandando memes con mi foto en el grupo de WhatsApp del curso. Me da vergüenza venir.', obs:'' },
+    { id:3, fechaHora:'01/05/2026 14:22', nombre:'Sofía R.',     curso:'5° año C', tipo:'Conflicto escolar',        urgencia:'Bajo',    estado:'Cerrado',     solicitaContacto:'No', descripcion:'Tuve una discusión fuerte con una compañera. Ya está mejor pero quería contarlo.', obs:'Resuelta. Se habló con ambas partes el 01/05.' },
+    { id:4, fechaHora:'30/04/2026 11:08', nombre:'Mateo L.',     curso:'4° año A', tipo:'Riesgo psicosocial',       urgencia:'Crítico', estado:'Derivado',    solicitaContacto:'Sí', descripcion:'Hay algo en casa que me tiene muy angustiado. Necesito hablar con alguien pronto.', obs:'Derivado al servicio de salud mental externo. Familia contactada el 30/04.' },
+    { id:5, fechaHora:'29/04/2026 09:00', nombre:'Valentina P.', curso:'2° año B', tipo:'Necesito hablar con el EOE',urgencia:'Medio',  estado:'En revisión', solicitaContacto:'Sí', descripcion:'No sé bien cómo explicarlo. Me siento rara hace semanas. Me gustaría hablar.', obs:'' },
+    { id:6, fechaHora:'28/04/2026 15:33', nombre:'Agustín T.',   curso:'6° año A', tipo:'Malestar emocional',       urgencia:'Bajo',    estado:'Recibido',    solicitaContacto:'No', descripcion:'Mucha presión por los exámenes finales. Necesito organizarme mejor.', obs:'' },
+  ];
+
+  let alertas = [];
+
+  /* ─── AUTH ─── */
+  document.getElementById('btn-login').addEventListener('click', login);
+  ['login-usuario','login-clave'].forEach(id =>
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') login(); })
+  );
+
+  function login() {
+    const clave = document.getElementById('login-clave').value;
+    document.getElementById('login-error').style.display = 'none';
+    if (clave === EOE_PASSWORD) {
+      document.getElementById('pantalla-login').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      cargarAlertas();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+      document.getElementById('login-clave').value = '';
+      document.getElementById('login-clave').focus();
+    }
+  }
+
+  document.getElementById('btn-cerrar').addEventListener('click', () => {
+    document.getElementById('pantalla-login').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('login-usuario').value = '';
+    document.getElementById('login-clave').value = '';
+    alertas = [];
+  });
+
+  /* ─── CARGA ─── */
+  async function cargarAlertas() {
+    mostrarCarga(true);
+
+    /* MODO REAL — descomentar cuando WEB_APP_URL esté configurada:
+    try {
+      const res  = await fetch(`${WEB_APP_URL}?action=getAlertas&token=${encodeURIComponent(EOE_TOKEN)}`);
+      const json = await res.json();
+      if (!json.ok) throw new Error(json.error);
+      alertas = json.alertas;
+      document.getElementById('banner-demo').style.display = 'none';
+    } catch(e) {
+      console.error(e);
+      alertas = DEMO.map(a => ({...a}));
+      alert('No se pudo conectar con Google Sheets. Mostrando datos demo.');
+    }
+    */
+
+    /* MODO DEMO */
+    await delay(600);
+    alertas = DEMO.map(a => ({...a}));
+
+    mostrarCarga(false);
+    renderStats();
+    aplicarFiltros();
+  }
+
+  function mostrarCarga(v) {
+    document.getElementById('estado-carga').style.display     = v ? 'block' : 'none';
+    document.getElementById('lista-alertas').style.display    = v ? 'none' : 'block';
+  }
+
+  const delay = ms => new Promise(r => setTimeout(r, ms));
+
+  /* ─── STATS ─── */
+  function renderStats() {
+    const tot   = alertas.length;
+    const crit  = alertas.filter(a => a.urgencia === 'Crítico').length;
+    const med   = alertas.filter(a => a.urgencia === 'Medio').length;
+    const baj   = alertas.filter(a => a.urgencia === 'Bajo').length;
+    const pend  = alertas.filter(a => a.estado === 'Recibido').length;
+    document.getElementById('stats').innerHTML = `
+      <div class="stat">          <div class="stat-lbl">📊 Total</div>      <div class="stat-num">${tot}</div>  <div class="stat-desc">alertas recibidas</div></div>
+      <div class="stat critica"> <div class="stat-lbl">🔴 Críticas</div>   <div class="stat-num">${crit}</div> <div class="stat-desc">atención urgente</div></div>
+      <div class="stat media">   <div class="stat-lbl">🟡 Medias</div>    <div class="stat-num">${med}</div>  <div class="stat-desc">seguimiento próximo</div></div>
+      <div class="stat baja">    <div class="stat-lbl">🟢 Bajas</div>     <div class="stat-num">${baj}</div>  <div class="stat-desc">monitorear</div></div>
+      <div class="stat sinrev">  <div class="stat-lbl">📥 Sin revisar</div><div class="stat-num">${pend}</div> <div class="stat-desc">pendientes</div></div>
+    `;
+  }
+
+  /* ─── FILTROS ─── */
+  document.getElementById('filtro-urgencia').addEventListener('change', aplicarFiltros);
+  document.getElementById('filtro-estado').addEventListener('change', aplicarFiltros);
+
+  function aplicarFiltros() {
+    const fu = document.getElementById('filtro-urgencia').value;
+    const fe = document.getElementById('filtro-estado').value;
+    let lista = [...alertas];
+    if (fu) lista = lista.filter(a => a.urgencia === fu);
+    if (fe) lista = lista.filter(a => a.estado   === fe);
+    renderAlertas(lista);
+  }
+
+  /* ─── RENDER TARJETAS ─── */
+  function renderAlertas(lista) {
+    const cont = document.getElementById('lista-alertas');
+    if (!lista.length) {
+      cont.innerHTML = `<div class="estado-vacio"><div class="vacio-ico">📭</div><p>No hay alertas con ese filtro.</p></div>`;
+      return;
+    }
+    cont.innerHTML = lista.map(a => `
+      <article class="tarjeta urg-${clsUrg(a.urgencia)}" role="listitem">
+
+        <div class="tar-header">
+          <div class="tar-id-nombre">
+            <span class="tar-id">#${a.id}</span>
+            <span class="tar-nombre">${esc(a.nombre)}</span>
+          </div>
+          <div class="tar-meta">
+            <span class="tar-fecha">${esc(a.fechaHora)}</span>
+            ${bdgUrg(a.urgencia)}
+            ${bdgEst(a.estado)}
+          </div>
+        </div>
+
+        <div class="tar-body">
+          <div class="datos-grid">
+            <div class="dato"><span class="dato-k">Curso</span><span class="dato-v">${esc(a.curso)}</span></div>
+            <div class="dato"><span class="dato-k">Tipo</span><span class="dato-v">${esc(a.tipo)}</span></div>
+            <div class="dato">
+              <span class="dato-k">Solicita contacto</span>
+              <span class="dato-v ${a.solicitaContacto==='Sí'?'si-contacto':'no-contacto'}">
+                ${a.solicitaContacto==='Sí'?'📞 Sí':'— No'}
+              </span>
+            </div>
+          </div>
+          <div class="desc-bloque">
+            <div class="desc-k">Descripción del alumno/a</div>
+            <p class="desc-v">${esc(a.descripcion)}</p>
+          </div>
+        </div>
+
+        <div class="tar-controls">
+          <div class="ctrl-title">⚙️ Gestión del EOE</div>
+          <div class="ctrl-row">
+            <select class="estado-select" id="est-${a.id}" aria-label="Estado alerta ${a.id}">
+              ${['Recibido','En revisión','Derivado','Cerrado'].map(s =>
+                `<option${a.estado===s?' selected':''}>${s}</option>`).join('')}
+            </select>
+          </div>
+          <textarea class="obs-area" id="obs-${a.id}"
+            placeholder="Observaciones internas: seguimiento, derivaciones, fechas de contacto…"
+            aria-label="Observaciones alerta ${a.id}">${esc(a.obs)}</textarea>
+          <button class="btn-guardar" id="bg-${a.id}" onclick="guardar(${a.id})">💾 Guardar cambios</button>
+          <p class="feedback-ok" id="fb-${a.id}" aria-live="polite">✅ Guardado correctamente</p>
+        </div>
+
+      </article>
+    `).join('');
+  }
+
+  /* ─── GUARDAR ─── */
+  async function guardar(id) {
+    const est = document.getElementById(`est-${id}`).value;
+    const obs = document.getElementById(`obs-${id}`).value;
+    const btn = document.getElementById(`bg-${id}`);
+    const fb  = document.getElementById(`fb-${id}`);
+
+    btn.disabled = true; btn.textContent = 'Guardando…';
+
+    /* MODO REAL:
+    try {
+      await fetch(`${WEB_APP_URL}?action=updateEstado&token=${encodeURIComponent(EOE_TOKEN)}&id=${id}&estado=${encodeURIComponent(est)}`);
+      await fetch(`${WEB_APP_URL}?action=updateObs&token=${encodeURIComponent(EOE_TOKEN)}&id=${id}&obs=${encodeURIComponent(obs)}`);
+    } catch(e) { console.error(e); alert('Error al guardar.'); }
+    */
+
+    await delay(400);
+    const a = alertas.find(x => x.id === id);
+    if (a) { a.estado = est; a.obs = obs; }
+    renderStats();
+
+    fb.style.display = 'block';
+    setTimeout(() => { fb.style.display = 'none'; }, 3000);
+
+    btn.disabled = false; btn.innerHTML = '💾 Guardar cambios';
+  }
+
+  /* ─── HELPERS ─── */
+  function clsUrg(u) { return ({Bajo:'bajo',Medio:'medio','Crítico':'critico'})[u] || 'bajo'; }
+
+  function bdgUrg(u) {
+    const ico = {Bajo:'🟢',Medio:'🟡','Crítico':'🔴'};
+    const cls = {Bajo:'bajo',Medio:'medio','Crítico':'critico'};
+    return `<span class="badge badge-${cls[u]||'bajo'}">${ico[u]||'⚪'} ${u}</span>`;
+  }
+
+  function bdgEst(e) {
+    const cls = {Recibido:'recibido','En revisión':'revision',Derivado:'derivado',Cerrado:'cerrado'};
+    return `<span class="badge badge-${cls[e]||'recibido'}">${e}</span>`;
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  }
+</script>
+</body>
+</html>
