@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ITAT · Enviar Alerta</title>
+  <title>ITAT · Panel EOE</title>
   <!--
   ════════════════════════════════════════════════════
    ITAT — Interfaz Tecnológica de Alerta Temprana
-   Vista: ALUMNO/A  |  alumno.html
+   Vista: EOE (privada)  |  eoe.html
    Proyecto educativo · Gabriela Roldan · 2026
   ════════════════════════════════════════════════════
   -->
@@ -26,20 +26,19 @@
     --lila-pale:  #f0ebff;
     --celeste:    #38bdf8;
     --teal:       #14b8a6;
-    --teal-lt:    #99f6e4;
     --teal-pale:  #f0fdf9;
     --lav:        #ede9fe;
 
-    --ok:        #059669;  --ok-bg:  #ecfdf5; --ok-ring:   #6ee7b7;
-    --warn:      #b45309;  --warn-bg:#fffbeb; --warn-ring: #fcd34d;
-    --alert:     #be185d;  --alert-bg:#fdf2f8; --alert-ring:#f9a8d4;
+    --ok:        #059669;  --ok-bg:   #ecfdf5; --ok-ring:   #6ee7b7;
+    --warn:      #b45309;  --warn-bg: #fffbeb; --warn-ring: #fcd34d;
+    --crit:      #be185d;  --crit-bg: #fdf2f8; --crit-ring: #f9a8d4;
 
-    --bg:        #f8f6ff;
-    --surface:   #ffffff;
-    --border:    #e4dff8;
-    --txt:       #2e2750;
-    --txt-md:    #5b5380;
-    --txt-lt:    #9c94c4;
+    --bg:       #f3f0fc;
+    --surface:  #ffffff;
+    --border:   #e4dff8;
+    --txt:      #2e2750;
+    --txt-md:   #5b5380;
+    --txt-lt:   #9c94c4;
 
     --f-ui:   'Outfit', sans-serif;
     --f-disp: 'Fraunces', serif;
@@ -47,12 +46,11 @@
     --r-xs:  8px;  --r-sm: 12px;
     --r-md: 16px;  --r-lg: 22px;
 
-    --sh-card: 0 1px 3px rgba(108,53,222,.06), 0 4px 16px rgba(108,53,222,.09);
-    --sh-lift: 0 6px 24px rgba(108,53,222,.18), 0 1px 4px rgba(108,53,222,.10);
-    /* Sombra física botón: inferior → sensación de altura */
-    --sh-btn:   0 5px 0 rgba(58,20,130,.65), 0 2px 14px rgba(108,53,222,.32);
-    --sh-btn-h: 0 7px 0 rgba(58,20,130,.65), 0 4px 20px rgba(108,53,222,.44);
-    --sh-btn-a: 0 1px 0 rgba(58,20,130,.65), 0 0   4px rgba(108,53,222,.20);
+    --sh-card: 0 1px 3px rgba(108,53,222,.06), 0 4px 16px rgba(108,53,222,.08);
+    --sh-lift: 0 8px 28px rgba(108,53,222,.17), 0 2px 6px rgba(108,53,222,.09);
+    --sh-btn:  0 4px 0 rgba(58,20,130,.60), 0 2px 12px rgba(108,53,222,.28);
+    --sh-btn-h:0 6px 0 rgba(58,20,130,.60), 0 4px 18px rgba(108,53,222,.40);
+    --sh-btn-a:0 1px 0 rgba(58,20,130,.60), 0 0   4px rgba(108,53,222,.18);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -63,740 +61,739 @@
     background: var(--bg);
     color: var(--txt);
     min-height: 100vh;
-    padding-bottom: 72px;
     background-image: radial-gradient(circle at 1px 1px, rgba(108,53,222,.05) 1px, transparent 0);
     background-size: 26px 26px;
   }
 
   /* ═══════════════════════════════════════════════════════
-     HEADER
+     PANTALLA DE LOGIN
   ═══════════════════════════════════════════════════════ */
-  .hdr {
-    background: linear-gradient(148deg, #1e0d5c 0%, var(--viola-dk) 35%, var(--viola) 68%, #4a90d9 100%);
-    color: #fff;
-    padding: 28px 24px 40px;
-    position: relative;
-    overflow: hidden;
+  #pantalla-login {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(148deg, #1e0d5c 0%, var(--viola-dk) 38%, var(--viola) 68%, #4a90d9 100%);
+    background-size: 200% 200%;
+    padding: 24px;
+    position: relative; overflow: hidden;
   }
 
-  /* Orbe turquesa arriba-derecha */
-  .hdr::before {
+  /* Orbe turquesa */
+  #pantalla-login::before {
     content: '';
-    position: absolute;
-    width: 350px; height: 350px; border-radius: 50%;
-    background: radial-gradient(circle at 38% 38%, rgba(56,189,248,.22) 0%, transparent 65%);
-    top: -130px; right: -90px; pointer-events: none;
+    position: absolute; width: 420px; height: 420px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(56,189,248,.20) 0%, transparent 65%);
+    top: -160px; right: -100px; pointer-events: none;
   }
-  /* Orbe lila abajo-izquierda, flotante */
-  .hdr::after {
+  /* Orbe lila flotante */
+  #pantalla-login::after {
     content: '';
-    position: absolute;
-    width: 220px; height: 220px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,158,248,.22) 0%, transparent 65%);
-    bottom: -90px; left: -50px; pointer-events: none;
+    position: absolute; width: 280px; height: 280px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,158,248,.20) 0%, transparent 65%);
+    bottom: -110px; left: -60px; pointer-events: none;
     animation: deriva 9s ease-in-out infinite;
   }
-  @keyframes deriva {
-    0%,100% { transform: translate(0,0); }
-    50%      { transform: translate(12px,-16px); }
-  }
+  @keyframes deriva { 0%,100%{transform:translate(0,0)} 50%{transform:translate(12px,-16px)} }
 
-  /* Malla de puntos */
-  .hdr-dots {
+  /* Malla de puntos login */
+  .login-dots {
     position: absolute; inset: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,.055) 1px, transparent 1px);
+    background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
     background-size: 20px 20px; pointer-events: none;
   }
 
-  .hdr-inner {
-    max-width: 600px; margin: 0 auto;
-    display: flex; align-items: center; gap: 20px;
-    position: relative; z-index: 2;
+  /* Caja de login */
+  .login-box {
+    background: rgba(255,255,255,.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.6);
+    border-radius: 26px;
+    padding: 42px 36px 36px;
+    width: 100%; max-width: 400px;
+    box-shadow: 0 32px 80px rgba(30,13,92,.35), 0 4px 16px rgba(30,13,92,.20);
+    text-align: center;
+    position: relative; z-index: 1;
+    animation: rise .52s cubic-bezier(.22,1,.36,1) both;
   }
+  @keyframes rise { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 
-  /* Logo envuelto en cristal */
-  .hdr-logo-wrap {
-    flex-shrink: 0;
-    width: 82px; height: 82px;
-    background: rgba(255,255,255,.14);
-    border: 1.5px solid rgba(255,255,255,.32);
+  /* Logo en login */
+  .login-logo-wrap {
+    width: 88px; height: 88px;
+    background: linear-gradient(148deg, var(--lila-pale), var(--teal-pale));
+    border: 2px solid var(--border);
     border-radius: var(--r-md);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.22);
-    transition: transform .3s ease, box-shadow .3s ease;
+    box-shadow: 0 4px 16px rgba(108,53,222,.18);
+    animation: latir 3.5s ease-in-out infinite;
   }
-  .hdr-logo-wrap:hover {
-    transform: scale(1.07) rotate(-3deg);
-    box-shadow: 0 10px 30px rgba(0,0,0,.30);
-  }
-  .hdr-logo { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .hdr-logo-fb { display: none; font-size: 2.4rem; line-height: 1; }
+  @keyframes latir { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
 
-  .hdr-texts h1 {
-    font-family: var(--f-disp);
-    font-size: 1.35rem; font-weight: 400; font-style: italic;
-    line-height: 1.25; margin-bottom: 4px;
-    text-shadow: 0 2px 8px rgba(0,0,0,.22);
-  }
-  .hdr-texts p { font-size: .78rem; font-weight: 500; opacity: .72; letter-spacing: .4px; }
+  .login-logo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .login-logo-fb { display: none; font-size: 2.6rem; line-height: 1; }
 
-  /* Arcoíris inferior */
-  .hdr-rainbow {
-    position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
-    background: linear-gradient(90deg, var(--viola) 0%, var(--celeste) 50%, var(--teal) 100%);
-    opacity: .75;
+  .login-box h1 {
+    font-family: var(--f-disp); font-size: 1.38rem; font-weight: 400; color: var(--viola-dk);
+    margin-bottom: 4px;
   }
+  .login-sub { font-size: .82rem; color: var(--txt-lt); margin-bottom: 28px; line-height: 1.5; }
 
-  /* Ola SVG */
-  .hdr-wave {
-    position: absolute; bottom: -1px; left: 0; right: 0;
-    line-height: 0; z-index: 1; pointer-events: none;
+  .login-campo { text-align: left; margin-bottom: 14px; }
+  .login-campo label { display: block; font-size: .82rem; font-weight: 700; color: var(--txt-md); margin-bottom: 5px; }
+  .login-campo input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: var(--r-sm);
+    padding: 11px 14px; font-family: var(--f-ui); font-size: .93rem; color: var(--txt);
+    background: var(--lila-pale); outline: none;
+    transition: border-color .18s, box-shadow .18s;
   }
-  .hdr-wave svg { display: block; width: 100%; }
+  .login-campo input:focus { border-color: var(--viola); box-shadow: 0 0 0 3px rgba(108,53,222,.14); }
 
-  /* ═══════════════════════════════════════════════════════
-     AVISO EMERGENCIA
-  ═══════════════════════════════════════════════════════ */
-  .aviso {
-    background: var(--lila-pale);
-    border-left: 4px solid var(--viola);
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 12px 20px;
-    font-size: .84rem; font-weight: 500; color: var(--viola-dk);
-    line-height: 1.55; position: relative; z-index: 1;
+  .login-error { color: var(--crit); font-size: .82rem; font-weight: 600; margin-bottom: 12px; display: none; }
+
+  /* Botón login — físico */
+  .btn-login {
+    width: 100%;
+    background: linear-gradient(135deg, var(--viola-dk) 0%, var(--viola) 50%, #4a90d9 100%);
+    color: #fff; border: none; border-radius: var(--r-sm);
+    padding: 13px; font-family: var(--f-ui); font-size: .97rem; font-weight: 800;
+    cursor: pointer; position: relative; overflow: hidden;
+    box-shadow: var(--sh-btn);
+    transition: box-shadow .10s, transform .10s, filter .18s;
   }
-  .aviso-ico { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
-  .aviso strong { font-weight: 800; }
-
-  /* ═══════════════════════════════════════════════════════
-     LAYOUT
-  ═══════════════════════════════════════════════════════ */
-  .main { max-width: 600px; margin: 0 auto; padding: 26px 16px 0; }
-
-  .card-intro { animation: rise .45s cubic-bezier(.22,1,.36,1) both; }
-  .card-form  { animation: rise .45s cubic-bezier(.22,1,.36,1) .09s both; }
-  @keyframes rise {
-    from { opacity:0; transform: translateY(20px); }
-    to   { opacity:1; transform: translateY(0); }
+  .btn-login::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.12) 0%, transparent 50%);
+    border-radius: inherit; pointer-events: none;
   }
+  .btn-login::after {
+    content: ''; position: absolute; top: 0; left: -80%;
+    width: 55%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.20), transparent);
+    transform: skewX(-18deg); transition: left .55s ease; pointer-events: none;
+  }
+  .btn-login:hover::after { left: 130%; }
+  .btn-login:hover { box-shadow: var(--sh-btn-h); transform: translateY(-2px); filter: brightness(1.07); }
+  .btn-login:active { box-shadow: var(--sh-btn-a); transform: translateY(4px); filter: brightness(.96); }
+
+  .login-nota { font-size: .73rem; color: var(--txt-lt); margin-top: 16px; line-height: 1.65; }
 
   /* ═══════════════════════════════════════════════════════
-     TARJETA INTRO — borde degradado
+     APP
   ═══════════════════════════════════════════════════════ */
-  .card-intro {
+  #app { display: none; min-height: 100vh; }
+
+  /* ── Topbar ── */
+  .topbar {
+    background: linear-gradient(148deg, #1e0d5c 0%, var(--viola-dk) 38%, var(--viola) 68%, #4a90d9 100%);
+    color: #fff; height: 60px;
+    display: flex; align-items: center; padding: 0 22px; gap: 14px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 20px rgba(30,13,92,.30);
+    overflow: hidden;
+  }
+  /* Orbe decorativo topbar */
+  .topbar::after {
+    content: ''; position: absolute;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(56,189,248,.18) 0%, transparent 65%);
+    right: 40px; top: -80px; pointer-events: none;
+  }
+
+  .top-logo-wrap {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28);
+    border-radius: var(--r-xs); display: flex; align-items: center; justify-content: center;
+    overflow: hidden; flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .top-logo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .top-logo-fb { display: none; font-size: 1.2rem; line-height: 1; }
+
+  .top-info { position: relative; z-index: 1; }
+  .top-info h1 { font-family: var(--f-disp); font-size: 1.05rem; font-weight: 400; font-style: italic; }
+  .top-info p  { font-size: .71rem; opacity: .68; }
+
+  .top-space { flex: 1; }
+
+  .btn-salir {
+    background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.28);
+    color: #fff; border-radius: var(--r-xs);
+    padding: 6px 14px; font-family: var(--f-ui); font-size: .78rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+    transition: background .18s, transform .12s;
+    position: relative; z-index: 1;
+  }
+  .btn-salir:hover { background: rgba(255,255,255,.28); transform: translateY(-1px); }
+  .btn-salir:active { transform: translateY(1px); }
+
+  /* ── Dashboard ── */
+  .dash { max-width: 1280px; margin: 0 auto; padding: 26px 20px 60px; }
+
+  /* Banner demo */
+  .banner-demo {
+    background: linear-gradient(135deg, var(--warn-bg) 0%, #fff 100%);
+    border: 1.5px solid var(--warn-ring);
+    border-radius: var(--r-md); padding: 13px 18px;
+    font-size: .82rem; color: #78350f; margin-bottom: 22px; line-height: 1.55;
+  }
+  .banner-demo strong { font-weight: 800; }
+  .banner-demo code { background: rgba(0,0,0,.07); border-radius: 4px; padding: 1px 5px; font-size: .80rem; }
+
+  /* ── Stats ── */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 26px; }
+
+  .stat {
     background: var(--surface);
-    border-radius: var(--r-lg);
-    padding: 22px 22px 18px;
-    margin-bottom: 14px;
+    border-radius: var(--r-md); padding: 18px 16px 15px;
     box-shadow: var(--sh-card);
-    position: relative; overflow: hidden;
-    transition: box-shadow .22s;
+    border-top: 4px solid var(--border);
     border: 1px solid rgba(228,223,248,.6);
+    border-top-width: 4px;
+    transition: transform .20s, box-shadow .20s;
+    position: relative; overflow: hidden;
   }
-  /* Borde izquierdo degradado viola→teal */
-  .card-intro::before {
-    content: '';
-    position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
-    background: linear-gradient(180deg, var(--viola) 0%, var(--celeste) 55%, var(--teal) 100%);
-    border-radius: var(--r-lg) 0 0 var(--r-lg);
-  }
-  /* Brillo esquina superior derecha */
-  .card-intro::after {
-    content: '';
-    position: absolute; top: -50px; right: -50px;
-    width: 140px; height: 140px; border-radius: 50%;
+  /* Brillo esquina superior */
+  .stat::after {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 80px; height: 80px; border-radius: 50%;
     background: radial-gradient(circle, rgba(108,53,222,.06) 0%, transparent 70%);
     pointer-events: none;
   }
-  .card-intro:hover { box-shadow: var(--sh-lift); }
+  .stat:hover { transform: translateY(-3px); box-shadow: var(--sh-lift); }
 
-  .card-intro h2 {
-    font-family: var(--f-disp);
-    font-size: 1.08rem; font-weight: 400; color: var(--viola-dk); margin-bottom: 9px;
+  .stat.critica { border-top-color: var(--crit); }
+  .stat.media   { border-top-color: var(--warn); }
+  .stat.baja    { border-top-color: var(--ok); }
+  .stat.sinrev  { border-top-color: var(--viola); }
+
+  .stat-lbl { font-size: .69rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--txt-lt); margin-bottom: 8px; }
+  .stat-num { font-size: 2.2rem; font-weight: 800; line-height: 1; color: var(--viola-dk); }
+  .stat.critica .stat-num { color: var(--crit); }
+  .stat.media   .stat-num { color: var(--warn); }
+  .stat.baja    .stat-num { color: var(--ok); }
+  .stat.sinrev  .stat-num { color: var(--viola); }
+  .stat-desc { font-size: .74rem; color: var(--txt-lt); margin-top: 4px; }
+
+  /* ── Barra herramientas ── */
+  .barra {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px;
   }
-  .card-intro p { font-size: .875rem; color: var(--txt-md); line-height: 1.65; }
+  .barra h2 { font-size: 1rem; font-weight: 800; color: var(--viola-dk); margin-right: auto; }
 
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
-  .chip {
-    background: linear-gradient(135deg, var(--lila-pale), var(--teal-pale));
-    color: var(--viola-dk); font-size: .72rem; font-weight: 700;
-    padding: 4px 11px; border-radius: 100px;
-    border: 1px solid var(--border);
-    transition: transform .15s, box-shadow .15s;
+  .filtro {
+    border: 1.5px solid var(--border); border-radius: var(--r-xs);
+    padding: 7px 12px; font-family: var(--f-ui); font-size: .82rem; color: var(--txt);
+    background: var(--surface); cursor: pointer; outline: none;
+    appearance: none; -webkit-appearance: none;
+    transition: border-color .18s;
   }
-  .chip:hover { transform: translateY(-2px); box-shadow: 0 3px 8px rgba(108,53,222,.14); }
+  .filtro:focus { border-color: var(--viola); }
 
-  /* ═══════════════════════════════════════════════════════
-     TARJETA FORMULARIO
-  ═══════════════════════════════════════════════════════ */
-  .card-form {
-    background: var(--surface);
-    border-radius: var(--r-lg);
-    padding: 26px 22px;
-    box-shadow: var(--sh-card);
-    border: 1px solid rgba(228,223,248,.6);
-  }
-
-  /* Título sección */
-  .s-title {
-    font-size: .67rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.6px;
-    color: var(--viola);
-    margin-bottom: 14px; margin-top: 26px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .s-title:first-child { margin-top: 0; }
-  .s-title::after {
-    content: ''; flex: 1; height: 1.5px;
-    background: linear-gradient(90deg, var(--lila) 0%, var(--celeste) 55%, transparent 100%);
-    opacity: .45;
-  }
-
-  /* Campo */
-  .campo { margin-bottom: 17px; }
-  .campo label { display: block; font-size: .86rem; font-weight: 700; color: var(--txt); margin-bottom: 5px; }
-  .campo label .req { color: var(--alert); margin-left: 2px; }
-  .campo .hint { font-size: .76rem; color: var(--txt-lt); font-style: italic; margin-bottom: 7px; line-height: 1.4; }
-
-  /* Inputs / select / textarea */
-  .campo input[type="text"],
-  .campo select,
-  .campo textarea {
-    width: 100%;
-    border: 1.5px solid var(--border);
-    border-radius: var(--r-sm);
-    padding: 11px 14px;
-    font-family: var(--f-ui); font-size: .92rem; color: var(--txt);
-    background: var(--lila-pale);
-    outline: none; appearance: none; -webkit-appearance: none;
-    transition: border-color .18s, box-shadow .18s, background .18s;
-  }
-  .campo input[type="text"]:focus,
-  .campo select:focus,
-  .campo textarea:focus {
-    border-color: var(--viola);
-    box-shadow: 0 0 0 3px rgba(108,53,222,.14);
-    background: var(--surface);
-  }
-  .campo textarea { resize: vertical; min-height: 122px; line-height: 1.56; }
-
-  .sel-wrap { position: relative; }
-  .sel-wrap::after {
-    content: '▾'; position: absolute; right: 13px; top: 50%;
-    transform: translateY(-50%); color: var(--viola-lg); pointer-events: none; font-size: .88rem;
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     BOTONES DE TIPO — físicos, con sombra inferior
-  ═══════════════════════════════════════════════════════ */
-  .tipo-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 9px; margin-bottom: 18px;
-  }
-  .tipo-grid .tipo-item:last-child { grid-column: 1 / -1; }
-
-  .tipo-item { cursor: pointer; }
-  .tipo-item input[type="radio"] { display: none; }
-
-  .tipo-btn {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 6px;
-    border: 2px solid var(--border);
-    border-radius: var(--r-md);
-    background: var(--lila-pale);
-    padding: 14px 10px 12px;
-    text-align: center; cursor: pointer; user-select: none;
-    min-height: 84px;
-    box-shadow: 0 4px 0 rgba(108,53,222,.16), 0 1px 6px rgba(108,53,222,.08);
-    transition: border-color .15s, background .15s, box-shadow .10s, transform .10s;
-  }
-  .tipo-btn .ico { font-size: 1.55rem; line-height: 1; transition: transform .20s; }
-  .tipo-btn .lbl { font-size: .79rem; font-weight: 700; color: var(--txt-md); line-height: 1.3; }
-
-  /* Último: horizontal */
-  .tipo-grid .tipo-item:last-child .tipo-btn {
-    flex-direction: row; padding: 12px 16px; min-height: auto; gap: 10px;
-  }
-  .tipo-grid .tipo-item:last-child .tipo-btn .lbl { text-align: left; }
-
-  /* Hover — sube */
-  .tipo-btn:hover {
-    border-color: var(--viola-lg);
-    background: linear-gradient(135deg, var(--lav) 0%, var(--teal-pale) 100%);
-    box-shadow: 0 6px 0 rgba(108,53,222,.18), 0 3px 12px rgba(108,53,222,.12);
-    transform: translateY(-2px);
-  }
-  .tipo-btn:hover .ico { transform: scale(1.14); }
-
-  /* Click — hunde */
-  .tipo-btn:active {
-    transform: translateY(3px);
-    box-shadow: 0 1px 0 rgba(108,53,222,.18);
-  }
-
-  /* Seleccionado */
-  .tipo-item input[type="radio"]:checked + .tipo-btn {
-    border-color: var(--viola);
+  /* Botón actualizar */
+  .btn-actualizar {
     background: linear-gradient(135deg, var(--lila-pale) 0%, var(--teal-pale) 100%);
-    box-shadow: 0 3px 0 rgba(108,53,222,.28), 0 0 0 3px rgba(108,53,222,.12);
+    border: 1.5px solid var(--border); color: var(--viola-dk);
+    border-radius: var(--r-xs); padding: 7px 16px;
+    font-family: var(--f-ui); font-size: .82rem; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; gap: 6px;
+    box-shadow: 0 3px 0 rgba(108,53,222,.14);
+    transition: box-shadow .10s, transform .10s, background .18s;
   }
-  .tipo-item input[type="radio"]:checked + .tipo-btn .lbl { color: var(--viola-dk); }
-  .tipo-item input[type="radio"]:checked + .tipo-btn .ico { transform: scale(1.1); }
+  .btn-actualizar:hover { background: var(--lav); transform: translateY(-2px); box-shadow: 0 5px 0 rgba(108,53,222,.18); }
+  .btn-actualizar:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(108,53,222,.14); }
 
-  /* ═══════════════════════════════════════════════════════
-     BOTONES DE URGENCIA — físicos
-  ═══════════════════════════════════════════════════════ */
-  .urg-row { display: flex; gap: 9px; margin-bottom: 18px; }
-  .urg-item { flex: 1; cursor: pointer; }
-  .urg-item input[type="radio"] { display: none; }
-
-  .urg-btn {
-    display: flex; flex-direction: column; align-items: center; gap: 5px;
-    border: 2px solid var(--border);
-    border-radius: var(--r-md);
-    background: var(--lila-pale);
-    padding: 12px 8px; text-align: center; cursor: pointer; user-select: none;
-    box-shadow: 0 4px 0 rgba(108,53,222,.14), 0 1px 5px rgba(108,53,222,.07);
-    transition: border-color .15s, background .15s, box-shadow .10s, transform .10s;
-  }
-  .urg-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(108,53,222,.18), 0 3px 10px rgba(108,53,222,.10); }
-  .urg-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(108,53,222,.14); }
-
-  .urg-dot { width: 11px; height: 11px; border-radius: 50%; transition: transform .2s; }
-  .urg-btn:hover .urg-dot { transform: scale(1.35); }
-  .urg-lbl { font-size: .81rem; font-weight: 800; }
-  .urg-desc { font-size: .68rem; color: var(--txt-lt); line-height: 1.3; }
-
-  /* Bajo */
-  .urg-item.bajo  .urg-dot { background: var(--ok); }
-  .urg-item.bajo  .urg-lbl { color: var(--ok); }
-  .urg-item.bajo  input:checked + .urg-btn {
-    border-color: var(--ok-ring); background: var(--ok-bg);
-    box-shadow: 0 3px 0 rgba(5,150,105,.24), 0 0 0 3px rgba(5,150,105,.12);
-  }
-  /* Medio */
-  .urg-item.medio .urg-dot { background: var(--warn); }
-  .urg-item.medio .urg-lbl { color: var(--warn); }
-  .urg-item.medio input:checked + .urg-btn {
-    border-color: var(--warn-ring); background: var(--warn-bg);
-    box-shadow: 0 3px 0 rgba(180,83,9,.24), 0 0 0 3px rgba(180,83,9,.12);
-  }
-  /* Crítico — rosa oscuro, no rojo agresivo */
-  .urg-item.critico .urg-dot { background: var(--alert); }
-  .urg-item.critico .urg-lbl { color: var(--alert); }
-  .urg-item.critico input:checked + .urg-btn {
-    border-color: var(--alert-ring); background: var(--alert-bg);
-    box-shadow: 0 3px 0 rgba(190,24,93,.20), 0 0 0 3px rgba(190,24,93,.10);
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     CHECKBOX CONTACTO
-  ═══════════════════════════════════════════════════════ */
-  .contacto-wrap {
-    display: flex; align-items: flex-start; gap: 12px;
-    background: linear-gradient(135deg, var(--lila-pale) 0%, var(--teal-pale) 100%);
-    border: 1.5px solid var(--border);
-    border-radius: var(--r-md);
-    padding: 14px; cursor: pointer; margin-bottom: 18px;
-    box-shadow: 0 2px 8px rgba(108,53,222,.07);
-    transition: border-color .18s, box-shadow .18s;
-  }
-  .contacto-wrap:hover {
-    border-color: var(--viola-lg);
-    box-shadow: 0 0 0 3px rgba(108,53,222,.10), 0 4px 14px rgba(108,53,222,.10);
-  }
-  .contacto-wrap input[type="checkbox"] {
-    width: 19px; height: 19px; flex-shrink: 0; margin-top: 2px;
-    accent-color: var(--viola); cursor: pointer;
-  }
-  .contacto-txt { font-size: .87rem; color: var(--viola-dk); font-weight: 600; line-height: 1.5; }
-  .contacto-sub { display: block; font-size: .76rem; font-weight: 400; color: var(--txt-md); margin-top: 3px; }
-
-  /* Privacidad */
-  .privacidad {
-    font-size: .76rem; color: var(--txt-lt);
-    text-align: center; line-height: 1.62; margin-bottom: 20px; padding: 0 8px;
-  }
-  .privacidad strong { color: var(--txt-md); font-weight: 700; }
-
-  /* ═══════════════════════════════════════════════════════
-     BOTÓN ENVIAR — sombra física, shimmer, hundimiento
-  ═══════════════════════════════════════════════════════ */
-  .btn-enviar {
-    width: 100%;
-    background: linear-gradient(135deg, var(--viola-dk) 0%, var(--viola) 48%, #4a90d9 100%);
-    color: #fff; border: none;
-    border-radius: var(--r-md);
-    padding: 15px 20px;
-    font-family: var(--f-ui); font-size: .98rem; font-weight: 800; letter-spacing: .3px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    box-shadow: var(--sh-btn);
-    transform: translateY(0);
-    position: relative; overflow: hidden;
-    transition: box-shadow .10s, transform .10s, filter .18s;
-  }
-  /* Brillo interno en la parte superior */
-  .btn-enviar::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,.13) 0%, transparent 52%);
-    border-radius: inherit; pointer-events: none;
-  }
-  /* Shimmer que recorre el botón al hover */
-  .btn-enviar::after {
-    content: '';
-    position: absolute; top: 0; left: -80%;
-    width: 55%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.20), transparent);
-    transform: skewX(-18deg);
-    transition: left .55s ease; pointer-events: none;
-  }
-  .btn-enviar:hover:not(:disabled)::after { left: 130%; }
-
-  .btn-enviar:hover:not(:disabled) {
-    box-shadow: var(--sh-btn-h);
-    transform: translateY(-2px);
-    filter: brightness(1.07);
-  }
-  /* Hundimiento al click */
-  .btn-enviar:active:not(:disabled) {
-    box-shadow: var(--sh-btn-a);
-    transform: translateY(4px);
-    filter: brightness(.96);
-  }
-  .btn-enviar:disabled {
-    background: var(--border); box-shadow: 0 2px 0 #c8c4e0;
-    cursor: not-allowed; filter: none; transform: none;
-  }
-
-  .spinner {
-    width: 17px; height: 17px;
-    border: 2.5px solid rgba(255,255,255,.30); border-top-color: #fff;
-    border-radius: 50%; animation: spin .7s linear infinite;
-    display: none; flex-shrink: 0;
+  /* Spinner dashboard */
+  #estado-carga { text-align: center; padding: 40px 20px; color: var(--txt-lt); font-size: .90rem; display: none; }
+  .spinner-d {
+    width: 28px; height: 28px;
+    border: 3px solid var(--lila-pale); border-top-color: var(--viola);
+    border-radius: 50%; animation: spin .8s linear infinite;
+    margin: 0 auto 14px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ═══════════════════════════════════════════════════════
-     MENSAJES RESULTADO
-  ═══════════════════════════════════════════════════════ */
-  .msg {
-    display: none; border-radius: var(--r-lg);
-    padding: 24px 20px; text-align: center; margin-top: 18px;
-    animation: rise .34s ease both; box-shadow: var(--sh-card);
-  }
-  .msg.exito {
-    background: linear-gradient(135deg, var(--ok-bg) 0%, var(--teal-pale) 100%);
-    border: 1.5px solid var(--ok-ring);
-  }
-  .msg.error { background: var(--alert-bg); border: 1.5px solid var(--alert-ring); }
-  .msg-ico { font-size: 2.1rem; margin-bottom: 8px; }
-  .msg h3 { font-family: var(--f-disp); font-size: 1.04rem; font-weight: 400; margin-bottom: 7px; }
-  .msg.exito h3 { color: var(--ok); }
-  .msg.error h3 { color: var(--alert); }
-  .msg p { font-size: .87rem; color: var(--txt-md); line-height: 1.55; }
+  /* ── Lista alertas ── */
+  #lista-alertas { display: flex; flex-direction: column; gap: 16px; }
 
-  .btn-nueva {
-    margin-top: 14px; background: none;
-    border: 2px solid var(--teal); color: var(--teal);
-    border-radius: var(--r-sm); padding: 8px 18px;
-    font-family: var(--f-ui); font-size: .86rem; font-weight: 700; cursor: pointer;
-    box-shadow: 0 4px 0 rgba(20,184,166,.25);
-    transition: background .15s, color .15s, box-shadow .10s, transform .10s;
+  .estado-vacio {
+    background: var(--surface); border-radius: var(--r-lg);
+    padding: 50px 24px; text-align: center;
+    box-shadow: var(--sh-card); color: var(--txt-lt);
+    border: 1px solid rgba(228,223,248,.6);
   }
-  .btn-nueva:hover { background: var(--teal); color: #fff; transform: translateY(-2px); box-shadow: 0 6px 0 rgba(20,184,166,.25); }
-  .btn-nueva:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(20,184,166,.25); }
+  .vacio-ico { font-size: 2.4rem; margin-bottom: 12px; }
 
-  /* ═══════════════════════════════════════════════════════
-     FOOTER + RESPONSIVE
-  ═══════════════════════════════════════════════════════ */
-  .footer { text-align: center; margin-top: 32px; font-size: .73rem; color: var(--txt-lt); line-height: 1.75; }
+  /* ── Tarjeta de alerta ── */
+  .tarjeta {
+    background: var(--surface);
+    border-radius: var(--r-lg);
+    box-shadow: var(--sh-card);
+    overflow: hidden;
+    border: 1px solid rgba(228,223,248,.6);
+    /* Borde izquierdo de color según urgencia */
+    border-left: 5px solid var(--border);
+    transition: box-shadow .22s, transform .20s;
+  }
+  .tarjeta:hover { box-shadow: var(--sh-lift); transform: translateY(-2px); }
 
-  @media (max-width: 420px) {
-    .hdr { padding: 22px 16px 32px; }
-    .hdr-logo-wrap { width: 66px; height: 66px; }
-    .hdr-texts h1 { font-size: 1.18rem; }
-    .card-form { padding: 20px 14px; }
-    .urg-desc { display: none; }
-    .tipo-grid { grid-template-columns: 1fr; }
-    .tipo-grid .tipo-item:last-child { grid-column: auto; }
+  .tarjeta.urg-bajo    { border-left-color: var(--ok); }
+  .tarjeta.urg-medio   { border-left-color: var(--warn); }
+  .tarjeta.urg-critico {
+    border-left-color: var(--crit);
+    animation: pulso 2.8s ease-in-out infinite;
+  }
+  @keyframes pulso {
+    0%,100% { box-shadow: var(--sh-card); }
+    50%      { box-shadow: 0 0 0 4px rgba(190,24,93,.14), var(--sh-card); }
+  }
+
+  /* Header tarjeta */
+  .tar-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; padding: 16px 18px 13px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tar-id-nombre { display: flex; align-items: center; gap: 10px; }
+
+  .tar-id {
+    font-size: .70rem; font-weight: 800; color: var(--txt-lt);
+    background: var(--lila-pale); border-radius: 6px; padding: 3px 9px;
+    border: 1px solid var(--border);
+  }
+  .tar-nombre { font-size: 1rem; font-weight: 800; color: var(--txt); }
+  .tar-meta   { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .tar-fecha  { font-size: .75rem; color: var(--txt-lt); }
+
+  /* Badges */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 100px;
+    font-size: .71rem; font-weight: 800; white-space: nowrap;
+  }
+  .badge-bajo    { background: var(--ok-bg);   color: var(--ok);   border: 1px solid var(--ok-ring); }
+  .badge-medio   { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-ring); }
+  .badge-critico { background: var(--crit-bg); color: var(--crit); border: 1px solid var(--crit-ring); }
+  .badge-recibido{ background: var(--lila-pale); color: var(--txt-md); border: 1px solid var(--border); }
+  .badge-revision{ background: var(--lav);      color: var(--viola-dk); border: 1px solid var(--lila); }
+  .badge-derivado{ background: #f0fdf4;         color: #166534; border: 1px solid #bbf7d0; }
+  .badge-cerrado { background: var(--ok-bg);    color: var(--ok); border: 1px solid var(--ok-ring); }
+
+  /* Cuerpo tarjeta */
+  .tar-body { padding: 16px 18px; }
+
+  .datos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 12px; margin-bottom: 14px; }
+  .dato { display: flex; flex-direction: column; gap: 3px; }
+  .dato-k { font-size: .67rem; font-weight: 800; text-transform: uppercase; letter-spacing: .9px; color: var(--viola-lg); }
+  .dato-v { font-size: .88rem; color: var(--txt); font-weight: 600; }
+  .si-contacto { color: var(--viola-dk); font-weight: 700; }
+  .no-contacto { color: var(--txt-lt); }
+
+  /* Descripción */
+  .desc-bloque {
+    background: linear-gradient(135deg, var(--lila-pale) 0%, var(--teal-pale) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm); padding: 13px; margin-bottom: 0;
+  }
+  .desc-k { font-size: .67rem; font-weight: 800; text-transform: uppercase; letter-spacing: .9px; color: var(--viola-lg); margin-bottom: 7px; }
+  .desc-v { font-size: .89rem; color: var(--txt); line-height: 1.62; }
+
+  /* Controles EOE */
+  .tar-controls {
+    border-top: 1px solid var(--border);
+    padding: 15px 18px;
+    background: linear-gradient(135deg, rgba(240,235,255,.35) 0%, rgba(240,253,249,.35) 100%);
+  }
+  .ctrl-title {
+    font-size: .67rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--viola); margin-bottom: 12px;
+  }
+  .ctrl-row { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+
+  .estado-select {
+    border: 1.5px solid var(--border); border-radius: var(--r-xs);
+    padding: 9px 12px; font-family: var(--f-ui); font-size: .85rem; color: var(--txt);
+    background: var(--surface); cursor: pointer; outline: none;
+    min-width: 170px; appearance: none; -webkit-appearance: none;
+    transition: border-color .18s;
+    box-shadow: 0 2px 0 rgba(108,53,222,.12);
+  }
+  .estado-select:focus { border-color: var(--viola); }
+
+  .obs-area {
+    width: 100%; border: 1.5px solid var(--border); border-radius: var(--r-xs);
+    padding: 10px 12px; font-family: var(--f-ui); font-size: .87rem; color: var(--txt);
+    resize: vertical; min-height: 80px; outline: none;
+    background: var(--surface); margin-top: 10px; line-height: 1.5;
+    transition: border-color .18s, box-shadow .18s;
+  }
+  .obs-area:focus { border-color: var(--viola); box-shadow: 0 0 0 3px rgba(108,53,222,.12); }
+
+  /* Botón guardar — físico */
+  .btn-guardar {
+    background: linear-gradient(135deg, var(--viola-dk) 0%, var(--viola) 55%, #4a8fd4 100%);
+    color: #fff; border: none; border-radius: var(--r-xs);
+    padding: 9px 18px; font-family: var(--f-ui); font-size: .84rem; font-weight: 800;
+    cursor: pointer; margin-top: 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: var(--sh-btn); position: relative; overflow: hidden;
+    transition: box-shadow .10s, transform .10s, filter .18s;
+  }
+  .btn-guardar::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.12) 0%, transparent 50%);
+    border-radius: inherit; pointer-events: none;
+  }
+  .btn-guardar:hover { box-shadow: var(--sh-btn-h); transform: translateY(-2px); filter: brightness(1.07); }
+  .btn-guardar:active { box-shadow: var(--sh-btn-a); transform: translateY(3px); filter: brightness(.96); }
+  .btn-guardar:disabled { background: var(--border); box-shadow: 0 2px 0 #c8c4e0; cursor: not-allowed; filter: none; transform: none; }
+
+  .feedback-ok { font-size: .78rem; color: var(--ok); font-weight: 700; display: none; margin-top: 6px; }
+
+  /* Footer */
+  .dash-footer { text-align: center; margin-top: 40px; font-size: .73rem; color: var(--txt-lt); line-height: 1.75; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .dash { padding: 18px 12px 50px; }
+    .tar-header { flex-direction: column; align-items: flex-start; }
+    .ctrl-row { flex-direction: column; }
+    .estado-select { min-width: 100%; }
   }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="hdr">
-  <div class="hdr-dots"></div>
-  <div class="hdr-inner">
-    <div class="hdr-logo-wrap">
-      <!-- Logo ITAT: ponelo en la misma carpeta con nombre itap.jfif -->
-      <img class="hdr-logo" src="itap.jfif" alt="Logo ITAT"
-        onerror="this.style.display='none'; this.parentElement.querySelector('.hdr-logo-fb').style.display='block';" />
-      <span class="hdr-logo-fb" aria-hidden="true">🛡️</span>
-    </div>
-    <div class="hdr-texts">
-      <h1>ITAT · Alerta Temprana</h1>
-      <p>Interfaz Tecnológica de Alerta Temprana</p>
-    </div>
-  </div>
-  <div class="hdr-rainbow"></div>
-  <!-- Ola SVG decorativa -->
-  <div class="hdr-wave">
-    <svg viewBox="0 0 1440 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,18 C360,36 1080,0 1440,18 L1440,36 L0,36 Z" fill="#f8f6ff"/>
-    </svg>
-  </div>
-</header>
+<!-- ══════════ LOGIN ══════════ -->
+<div id="pantalla-login">
+  <div class="login-dots"></div>
+  <div class="login-box">
 
-<!-- AVISO EMERGENCIA -->
-<div class="aviso" role="alert">
-  <span class="aviso-ico">⚠️</span>
-  <span><strong>Si estás en peligro inmediato:</strong> avisá a un adulto de confianza o pedí ayuda en la dirección del colegio.</span>
+    <div class="login-logo-wrap">
+      <img class="login-logo" src="itap.jfif" alt="Logo ITAT"
+        onerror="this.style.display='none'; this.parentElement.querySelector('.login-logo-fb').style.display='block';" />
+      <span class="login-logo-fb" aria-hidden="true">🛡️</span>
+    </div>
+
+    <h1>Panel EOE · ITAT</h1>
+    <p class="login-sub">Acceso exclusivo para el<br />Equipo de Orientación Escolar</p>
+
+    <div class="login-campo">
+      <label for="login-usuario">Usuario</label>
+      <input type="text" id="login-usuario" placeholder="usuario@escuela.edu.ar" autocomplete="username" />
+    </div>
+    <div class="login-campo">
+      <label for="login-clave">Contraseña</label>
+      <input type="password" id="login-clave" placeholder="••••••••••" autocomplete="current-password" />
+    </div>
+
+    <p class="login-error" id="login-error" role="alert">❌ Usuario o contraseña incorrectos.</p>
+
+    <button class="btn-login" id="btn-login">Ingresar</button>
+
+    <p class="login-nota">
+      🔒 Área restringida · Solo personal del EOE autorizado<br />
+      Prototipo educativo · ITAT · Gabriela Roldan · 2026
+    </p>
+  </div>
 </div>
 
-<!-- MAIN -->
-<main class="main">
+<!-- ══════════ APP ══════════ -->
+<div id="app">
 
-  <!-- Intro -->
-  <div class="card-intro" role="region" aria-label="Información">
-    <h2>Este espacio es seguro y confidencial.</h2>
-    <p>
-      Podés enviar una alerta si estás pasando por algo difícil.
-      El <strong>Equipo de Orientación Escolar</strong> la va a leer y acompañarte.
-      <strong>Nadie más va a ver tu mensaje.</strong>
-      Esta herramienta es de <em>prevención y acompañamiento</em>, no de diagnóstico clínico.
-    </p>
-    <div class="chips" aria-hidden="true">
-      <span class="chip">🔒 Confidencial</span>
-      <span class="chip">👤 Sin diagnóstico</span>
-      <span class="chip">🤝 Solo el EOE la ve</span>
-      <span class="chip">📱 Sin cuenta necesaria</span>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="top-logo-wrap">
+      <img class="top-logo" src="itap.jfif" alt="ITAT"
+        onerror="this.style.display='none'; this.parentElement.querySelector('.top-logo-fb').style.display='block';" />
+      <span class="top-logo-fb" aria-hidden="true">🛡️</span>
     </div>
-  </div>
+    <div class="top-info">
+      <h1>ITAT · Panel EOE</h1>
+      <p>Interfaz Tecnológica de Alerta Temprana</p>
+    </div>
+    <div class="top-space"></div>
+    <button class="btn-salir" id="btn-cerrar">Cerrar sesión</button>
+  </header>
 
-  <!-- Formulario -->
-  <div class="card-form">
-    <form id="form-alerta" novalidate>
+  <!-- Dashboard -->
+  <main class="dash">
 
-      <!-- SECCIÓN 1 -->
-      <div class="s-title">Tus datos</div>
-
-      <div class="campo">
-        <label for="campo-nombre">Nombre o alias <span class="req">*</span></label>
-        <p class="hint">Podés usar solo tu nombre, un apodo o lo que quieras.</p>
-        <input type="text" id="campo-nombre" name="nombre"
-          placeholder="Ej: Lucía, Lu, Anónimo/a…" maxlength="80" autocomplete="off" required />
-      </div>
-
-      <div class="campo">
-        <label for="campo-curso">Curso y división <span class="req">*</span></label>
-        <div class="sel-wrap">
-          <select id="campo-curso" name="curso" required>
-            <option value="">— Elegí tu curso —</option>
-            <optgroup label="Ciclo Básico">
-              <option>1° año A</option><option>1° año B</option><option>1° año C</option>
-              <option>2° año A</option><option>2° año B</option><option>2° año C</option>
-              <option>3° año A</option><option>3° año B</option><option>3° año C</option>
-            </optgroup>
-            <optgroup label="Ciclo Orientado">
-              <option>4° año A</option><option>4° año B</option><option>4° año C</option>
-              <option>5° año A</option><option>5° año B</option><option>5° año C</option>
-              <option>6° año A</option><option>6° año B</option><option>6° año C</option>
-            </optgroup>
-          </select>
-        </div>
-      </div>
-
-      <!-- SECCIÓN 2 -->
-      <div class="s-title">¿Qué está pasando?</div>
-      <p class="hint" style="margin-bottom:12px;">Elegí la opción que mejor describe tu situación:</p>
-
-      <div class="tipo-grid" role="radiogroup" aria-label="Tipo de situación">
-        <label class="tipo-item">
-          <input type="radio" name="tipo" value="Malestar emocional" required />
-          <div class="tipo-btn"><span class="ico">💙</span><span class="lbl">Malestar emocional</span></div>
-        </label>
-        <label class="tipo-item">
-          <input type="radio" name="tipo" value="Ciberbullying" />
-          <div class="tipo-btn"><span class="ico">📵</span><span class="lbl">Ciberbullying</span></div>
-        </label>
-        <label class="tipo-item">
-          <input type="radio" name="tipo" value="Conflicto escolar" />
-          <div class="tipo-btn"><span class="ico">🤝</span><span class="lbl">Conflicto escolar</span></div>
-        </label>
-        <label class="tipo-item">
-          <input type="radio" name="tipo" value="Riesgo psicosocial" />
-          <div class="tipo-btn"><span class="ico">⚠️</span><span class="lbl">Riesgo psicosocial</span></div>
-        </label>
-        <label class="tipo-item">
-          <input type="radio" name="tipo" value="Necesito hablar con el EOE" />
-          <div class="tipo-btn"><span class="ico">🗣️</span><span class="lbl">Necesito hablar con alguien del EOE</span></div>
-        </label>
-      </div>
-
-      <!-- SECCIÓN 3 -->
-      <div class="s-title">Nivel de urgencia</div>
-
-      <div class="urg-row" role="radiogroup" aria-label="Urgencia">
-        <label class="urg-item bajo">
-          <input type="radio" name="urgencia" value="Bajo" required />
-          <div class="urg-btn">
-            <div class="urg-dot"></div>
-            <span class="urg-lbl">Bajo</span>
-            <span class="urg-desc">Lo puedo manejar, pero quiero contarlo</span>
-          </div>
-        </label>
-        <label class="urg-item medio">
-          <input type="radio" name="urgencia" value="Medio" />
-          <div class="urg-btn">
-            <div class="urg-dot"></div>
-            <span class="urg-lbl">Medio</span>
-            <span class="urg-desc">Me está afectando bastante</span>
-          </div>
-        </label>
-        <label class="urg-item critico">
-          <input type="radio" name="urgencia" value="Crítico" />
-          <div class="urg-btn">
-            <div class="urg-dot"></div>
-            <span class="urg-lbl">Crítico</span>
-            <span class="urg-desc">Necesito ayuda lo antes posible</span>
-          </div>
-        </label>
-      </div>
-
-      <!-- SECCIÓN 4 -->
-      <div class="s-title">Contanos un poco más</div>
-
-      <div class="campo">
-        <label for="campo-descripcion">Describí qué está pasando <span class="req">*</span></label>
-        <p class="hint">No tenés que dar más detalles de los que quieras.</p>
-        <textarea id="campo-descripcion" name="descripcion"
-          placeholder="Escribí acá tu situación con las palabras que quieras…"
-          maxlength="800" required></textarea>
-      </div>
-
-      <!-- SECCIÓN 5 -->
-      <div class="s-title">¿Querés que te contacten?</div>
-
-      <label class="contacto-wrap" for="campo-contacto">
-        <input type="checkbox" id="campo-contacto" name="solicitaContacto" />
-        <div>
-          <span class="contacto-txt">📞 Sí, quiero que alguien del EOE se comunique conmigo</span>
-          <span class="contacto-sub">El equipo va a buscar el momento adecuado para hablar con vos en la escuela.</span>
-        </div>
-      </label>
-
-      <p class="privacidad">
-        <strong>🔐 Tu alerta es confidencial.</strong><br />
-        Solo el EOE puede verla. No se comparte con docentes ni compañeros/as.<br />
-        Esta herramienta es de <em>prevención y detección temprana</em>, no de diagnóstico clínico.
-      </p>
-
-      <button type="submit" class="btn-enviar" id="btn-enviar">
-        <span id="btn-texto">Enviar alerta</span>
-        <div class="spinner" id="spinner" aria-hidden="true"></div>
-      </button>
-
-    </form>
-
-    <div class="msg exito" id="msg-exito" role="alert" aria-live="polite">
-      <div class="msg-ico">✅</div>
-      <h3>¡Tu alerta fue enviada!</h3>
-      <p>El Equipo de Orientación Escolar la recibió.<br />Si pediste contacto, van a comunicarse con vos pronto.<br /><br /><strong>Gracias por confiar en nosotros.</strong></p>
-      <button class="btn-nueva" id="btn-nueva" type="button">Enviar otra alerta</button>
+    <div class="banner-demo" id="banner-demo">
+      <strong>⚠️ Modo demostración:</strong>
+      Los datos mostrados son de muestra. Para conectar con Google Sheets real, reemplazá
+      <code>WEB_APP_URL</code> y <code>EOE_TOKEN</code>, y descomentá el fetch real en <code>cargarAlertas()</code>.
     </div>
 
-    <div class="msg error" id="msg-error" role="alert" aria-live="polite">
-      <div class="msg-ico">❌</div>
-      <h3>Algo salió mal</h3>
-      <p>No pudimos enviar tu alerta en este momento.<br />Por favor intentá de nuevo o avisá directamente en el gabinete escolar.</p>
+    <!-- Stats -->
+    <section class="stats" id="stats" aria-label="Resumen de alertas"></section>
+
+    <!-- Barra -->
+    <div class="barra">
+      <h2>📋 Alertas recibidas</h2>
+      <select class="filtro" id="filtro-urgencia" aria-label="Filtrar por urgencia">
+        <option value="">Urgencia: Todas</option>
+        <option value="Bajo">🟢 Bajo</option>
+        <option value="Medio">🟡 Medio</option>
+        <option value="Crítico">🔴 Crítico</option>
+      </select>
+      <select class="filtro" id="filtro-estado" aria-label="Filtrar por estado">
+        <option value="">Estado: Todos</option>
+        <option value="Recibido">Recibido</option>
+        <option value="En revisión">En revisión</option>
+        <option value="Derivado">Derivado</option>
+        <option value="Cerrado">Cerrado</option>
+      </select>
+      <button class="btn-actualizar" id="btn-actualizar" onclick="cargarAlertas()">🔄 Actualizar</button>
     </div>
 
-  </div><!-- /card-form -->
+    <!-- Carga -->
+    <div id="estado-carga">
+      <div class="spinner-d"></div>
+      Cargando alertas…
+    </div>
 
-  <footer class="footer">
-    ITAT · Interfaz Tecnológica de Alerta Temprana<br />
-    Proyecto educativo · Gabriela Roldan · 2026<br />
-    Esta herramienta no reemplaza la atención de un profesional de salud mental.
-  </footer>
+    <!-- Lista -->
+    <div id="lista-alertas" role="list" aria-label="Lista de alertas"></div>
 
-</main>
+    <footer class="dash-footer">
+      ITAT · Panel del Equipo de Orientación Escolar<br />
+      ⚠️ Información confidencial · Solo para uso institucional del EOE<br />
+      Proyecto educativo · Gabriela Roldan · 2026
+    </footer>
 
-<!-- JAVASCRIPT — funcionalidad sin cambios -->
+  </main>
+</div>
+
+<!-- ══════════ JAVASCRIPT ══════════ -->
 <script>
- /* ─── CONFIGURACIÓN ─── */
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyXjvhpHqKg53rRiHLPak_tgKTruQzrt9bplMNdusxqHQxisnLUZD8CMA9azR1_WuDWkw/exec';
+  /* ─── CONFIGURACIÓN ─── */
+  const WEB_APP_URL  = 'https://script.google.com/macros/s/AKfycbwiijbZY6RTq0Gx1Oz0D01UR6zyVhcbMZdyWGszVj_rMwV5DIaTad-rY2zaMv1S7UKY3w/exec';
+  const EOE_TOKEN    = 'itat2026';
+  const EOE_PASSWORD = 'itat2026';
 
-  const form      = document.getElementById('form-alerta');
-  const btnEnviar = document.getElementById('btn-enviar');
-  const btnTexto  = document.getElementById('btn-texto');
-  const spinner   = document.getElementById('spinner');
-  const msgExito  = document.getElementById('msg-exito');
-  const msgError  = document.getElementById('msg-error');
-  const btnNueva  = document.getElementById('btn-nueva');
+  /* ─── DATOS DE DEMO (solo si falla la conexión) ─── */
+  const DEMO = [
+    { id:1, fechaHora:'02/05/2026 08:14', nombre:'Lucía M.',     curso:'3° año B', tipo:'Malestar emocional',       urgencia:'Crítico', estado:'En revisión', solicitaContacto:'Sí', descripcion:'Me siento muy sola últimamente. No puedo concentrarme en nada y ya no me dan ganas de venir al colegio.', obs:'' },
+    { id:2, fechaHora:'02/05/2026 09:47', nombre:'Tomás G.',     curso:'1° año A', tipo:'Ciberbullying',             urgencia:'Medio',   estado:'Recibido',    solicitaContacto:'No', descripcion:'Me están mandando memes con mi foto en el grupo de WhatsApp del curso. Me da vergüenza venir.', obs:'' },
+    { id:3, fechaHora:'01/05/2026 14:22', nombre:'Sofía R.',     curso:'5° año C', tipo:'Conflicto escolar',         urgencia:'Bajo',    estado:'Cerrado',     solicitaContacto:'No', descripcion:'Tuve una discusión fuerte con una compañera. Ya está mejor pero quería contarlo.', obs:'Resuelta. Se habló con ambas partes el 01/05.' },
+    { id:4, fechaHora:'30/04/2026 11:08', nombre:'Mateo L.',     curso:'4° año A', tipo:'Riesgo psicosocial',        urgencia:'Crítico', estado:'Derivado',    solicitaContacto:'Sí', descripcion:'Hay algo en casa que me tiene muy angustiado. Necesito hablar con alguien pronto.', obs:'Derivado al servicio de salud mental externo. Familia contactada el 30/04.' },
+    { id:5, fechaHora:'29/04/2026 09:00', nombre:'Valentina P.', curso:'2° año B', tipo:'Necesito hablar con el EOE',urgencia:'Medio',   estado:'En revisión', solicitaContacto:'Sí', descripcion:'No sé bien cómo explicarlo. Me siento rara hace semanas. Me gustaría hablar.', obs:'' },
+    { id:6, fechaHora:'28/04/2026 15:33', nombre:'Agustín T.',   curso:'6° año A', tipo:'Malestar emocional',        urgencia:'Bajo',    estado:'Recibido',    solicitaContacto:'No', descripcion:'Mucha presión por los exámenes finales. Necesito organizarme mejor.', obs:'' },
+  ];
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  let alertas = [];
 
-    const nombre      = document.getElementById('campo-nombre').value.trim();
-    const curso       = document.getElementById('campo-curso').value;
-    const tipo        = form.querySelector('input[name="tipo"]:checked')?.value || '';
-    const urgencia    = form.querySelector('input[name="urgencia"]:checked')?.value || '';
-    const descripcion = document.getElementById('campo-descripcion').value.trim();
-    const contacto    = document.getElementById('campo-contacto').checked ? 'Sí' : 'No';
+  /* ─── AUTH ─── */
+  document.getElementById('btn-login').addEventListener('click', login);
+  ['login-usuario','login-clave'].forEach(id =>
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') login(); })
+  );
 
-    if (!nombre)      { alert('Por favor, escribí tu nombre o un alias.'); document.getElementById('campo-nombre').focus(); return; }
-    if (!curso)       { alert('Por favor, elegí tu curso.'); document.getElementById('campo-curso').focus(); return; }
-    if (!tipo)        { alert('Por favor, elegí el tipo de situación.'); return; }
-    if (!urgencia)    { alert('Por favor, elegí el nivel de urgencia.'); return; }
-    if (!descripcion) { alert('Por favor, escribí una descripción de lo que está pasando.'); document.getElementById('campo-descripcion').focus(); return; }
-
-    const payload = {
-      nombre, curso, tipo, urgencia, descripcion,
-      solicitaContacto: contacto,
-      fechaHora: new Date().toLocaleString('es-AR', {
-        day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit'
-      })
-    };
-
-    btnEnviar.disabled    = true;
-    btnTexto.textContent  = 'Enviando…';
-    spinner.style.display = 'block';
-    ocultarMensajes();
-
-    try {
-      await fetch(WEB_APP_URL, {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      mostrarMsg('exito');
-      form.reset();
-      document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-    } catch (err) {
-      console.error('Error al enviar la alerta:', err);
-      mostrarMsg('error');
-    } finally {
-      btnEnviar.disabled    = false;
-      btnTexto.textContent  = 'Enviar alerta';
-      spinner.style.display = 'none';
+  function login() {
+    const clave = document.getElementById('login-clave').value;
+    document.getElementById('login-error').style.display = 'none';
+    if (clave === EOE_PASSWORD) {
+      document.getElementById('pantalla-login').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      cargarAlertas();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+      document.getElementById('login-clave').value = '';
+      document.getElementById('login-clave').focus();
     }
+  }
+
+  document.getElementById('btn-cerrar').addEventListener('click', () => {
+    document.getElementById('pantalla-login').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('login-usuario').value = '';
+    document.getElementById('login-clave').value = '';
+    alertas = [];
   });
 
-  btnNueva.addEventListener('click', () => { ocultarMensajes(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  /* ─── CARGA DE ALERTAS DESDE GOOGLE SHEETS ─── */
+  async function cargarAlertas() {
+    mostrarCarga(true);
 
-  function mostrarMsg(t) {
-    ocultarMensajes();
-    const el = t === 'exito' ? msgExito : msgError;
-    el.style.display = 'block';
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    try {
+      const url = `${WEB_APP_URL}?action=getAlertas&token=${encodeURIComponent(EOE_TOKEN)}`;
+      const res  = await fetch(url);
+      const json = await res.json();
+
+      if (!json.ok) throw new Error(json.error || 'Error del servidor');
+
+      // Convertir los datos de Sheets al formato que usa el panel
+      alertas = json.alertas.map((a, i) => ({
+        id:               a.id || i + 1,
+        fechaHora:        a.fechaHora,
+        nombre:           a.nombre,
+        curso:            a.curso,
+        tipo:             a.tipo,
+        urgencia:         a.urgencia,
+        estado:           a.estado || 'Recibido',
+        solicitaContacto: a.solicitaContacto,
+        descripcion:      a.descripcion,
+        obs:              a.obs || ''
+      }));
+
+      // Ocultar el banner de demo si conectó bien
+      const banner = document.getElementById('banner-demo');
+      if (banner) banner.style.display = 'none';
+
+    } catch(err) {
+      console.error('Error al conectar con Google Sheets:', err);
+      alertas = DEMO.map(a => ({...a}));
+      alert('No se pudo conectar con Google Sheets. Se muestran datos de demostración.');
+    }
+
+    mostrarCarga(false);
+    renderStats();
+    aplicarFiltros();
   }
-  function ocultarMensajes() { msgExito.style.display = 'none'; msgError.style.display = 'none'; }
+
+  const delay = ms => new Promise(r => setTimeout(r, ms));
+
+  function mostrarCarga(v) {
+    document.getElementById('estado-carga').style.display  = v ? 'block' : 'none';
+    document.getElementById('lista-alertas').style.display = v ? 'none'  : 'block';
+  }
+
+  /* ─── ESTADÍSTICAS ─── */
+  function renderStats() {
+    const tot  = alertas.length;
+    const crit = alertas.filter(a => a.urgencia === 'Crítico').length;
+    const med  = alertas.filter(a => a.urgencia === 'Medio').length;
+    const baj  = alertas.filter(a => a.urgencia === 'Bajo').length;
+    const pend = alertas.filter(a => a.estado   === 'Recibido').length;
+    document.getElementById('stats').innerHTML = `
+      <div class="stat">         <div class="stat-lbl">📊 Total</div>       <div class="stat-num">${tot}</div>  <div class="stat-desc">alertas recibidas</div></div>
+      <div class="stat critica"> <div class="stat-lbl">🔴 Críticas</div>   <div class="stat-num">${crit}</div> <div class="stat-desc">atención urgente</div></div>
+      <div class="stat media">   <div class="stat-lbl">🟡 Medias</div>     <div class="stat-num">${med}</div>  <div class="stat-desc">seguimiento próximo</div></div>
+      <div class="stat baja">    <div class="stat-lbl">🟢 Bajas</div>      <div class="stat-num">${baj}</div>  <div class="stat-desc">monitorear</div></div>
+      <div class="stat sinrev">  <div class="stat-lbl">📥 Sin revisar</div><div class="stat-num">${pend}</div> <div class="stat-desc">pendientes</div></div>
+    `;
+  }
+
+  /* ─── FILTROS ─── */
+  document.getElementById('filtro-urgencia').addEventListener('change', aplicarFiltros);
+  document.getElementById('filtro-estado').addEventListener('change', aplicarFiltros);
+
+  function aplicarFiltros() {
+    const fu = document.getElementById('filtro-urgencia').value;
+    const fe = document.getElementById('filtro-estado').value;
+    let lista = [...alertas];
+    if (fu) lista = lista.filter(a => a.urgencia === fu);
+    if (fe) lista = lista.filter(a => a.estado   === fe);
+    renderAlertas(lista);
+  }
+
+  /* ─── RENDER TARJETAS ─── */
+  function renderAlertas(lista) {
+    const cont = document.getElementById('lista-alertas');
+    if (!lista.length) {
+      cont.innerHTML = `<div class="estado-vacio"><div class="vacio-ico">📭</div><p>No hay alertas con ese filtro.</p></div>`;
+      return;
+    }
+    cont.innerHTML = lista.map(a => `
+      <article class="tarjeta urg-${clsUrg(a.urgencia)}" role="listitem">
+
+        <div class="tar-header">
+          <div class="tar-id-nombre">
+            <span class="tar-id">#${a.id}</span>
+            <span class="tar-nombre">${esc(a.nombre)}</span>
+          </div>
+          <div class="tar-meta">
+            <span class="tar-fecha">${esc(a.fechaHora)}</span>
+            ${bdgUrg(a.urgencia)}
+            ${bdgEst(a.estado)}
+          </div>
+        </div>
+
+        <div class="tar-body">
+          <div class="datos-grid">
+            <div class="dato"><span class="dato-k">Curso</span><span class="dato-v">${esc(a.curso)}</span></div>
+            <div class="dato"><span class="dato-k">Tipo</span><span class="dato-v">${esc(a.tipo)}</span></div>
+            <div class="dato">
+              <span class="dato-k">Solicita contacto</span>
+              <span class="dato-v ${a.solicitaContacto==='Sí'?'si-contacto':'no-contacto'}">
+                ${a.solicitaContacto==='Sí'?'📞 Sí':'— No'}
+              </span>
+            </div>
+          </div>
+          <div class="desc-bloque">
+            <div class="desc-k">Descripción del alumno/a</div>
+            <p class="desc-v">${esc(a.descripcion)}</p>
+          </div>
+        </div>
+
+        <div class="tar-controls">
+          <div class="ctrl-title">⚙️ Gestión del EOE</div>
+          <div class="ctrl-row">
+            <select class="estado-select" id="est-${a.id}" aria-label="Estado alerta ${a.id}">
+              ${['Recibido','En revisión','Derivado','Cerrado'].map(s =>
+                `<option${a.estado===s?' selected':''}>${s}</option>`).join('')}
+            </select>
+          </div>
+          <textarea class="obs-area" id="obs-${a.id}"
+            placeholder="Observaciones internas: seguimiento, derivaciones, fechas de contacto…"
+            aria-label="Observaciones alerta ${a.id}">${esc(a.obs)}</textarea>
+          <button class="btn-guardar" id="bg-${a.id}" onclick="guardar(${a.id})">💾 Guardar cambios</button>
+          <p class="feedback-ok" id="fb-${a.id}" aria-live="polite">✅ Guardado correctamente</p>
+        </div>
+
+      </article>
+    `).join('');
+  }
+
+  /* ─── GUARDAR CAMBIOS ─── */
+  async function guardar(id) {
+    const est = document.getElementById(`est-${id}`).value;
+    const obs = document.getElementById(`obs-${id}`).value;
+    const btn = document.getElementById(`bg-${id}`);
+    const fb  = document.getElementById(`fb-${id}`);
+
+    btn.disabled      = true;
+    btn.textContent   = 'Guardando…';
+
+    try {
+      await fetch(`${WEB_APP_URL}?action=updateEstado&token=${encodeURIComponent(EOE_TOKEN)}&id=${id}&estado=${encodeURIComponent(est)}`);
+      await fetch(`${WEB_APP_URL}?action=updateObs&token=${encodeURIComponent(EOE_TOKEN)}&id=${id}&obs=${encodeURIComponent(obs)}`);
+    } catch(err) {
+      console.error('Error al guardar:', err);
+    }
+
+    // Actualizar en memoria local también
+    const a = alertas.find(x => x.id == id);
+    if (a) { a.estado = est; a.obs = obs; }
+    renderStats();
+
+    fb.style.display = 'block';
+    setTimeout(() => { fb.style.display = 'none'; }, 3000);
+
+    btn.disabled    = false;
+    btn.innerHTML   = '💾 Guardar cambios';
+  }
+
+  /* ─── HELPERS ─── */
+  function clsUrg(u) { return ({Bajo:'bajo', Medio:'medio', 'Crítico':'critico'})[u] || 'bajo'; }
+
+  function bdgUrg(u) {
+    const ico = { Bajo:'🟢', Medio:'🟡', 'Crítico':'🔴' };
+    const cls = { Bajo:'bajo', Medio:'medio', 'Crítico':'critico' };
+    return `<span class="badge badge-${cls[u]||'bajo'}">${ico[u]||'⚪'} ${u}</span>`;
+  }
+
+  function bdgEst(e) {
+    const cls = { Recibido:'recibido', 'En revisión':'revision', Derivado:'derivado', Cerrado:'cerrado' };
+    return `<span class="badge badge-${cls[e]||'recibido'}">${e}</span>`;
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  }
 </script>
 </body>
 </html>
