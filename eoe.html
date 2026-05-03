@@ -567,19 +567,19 @@
 
 <!-- ══════════ JAVASCRIPT ══════════ -->
 <script>
-  /* ─── CONFIGURACIÓN — REEMPLAZAR ANTES DE PUBLICAR ─── */
-  const WEB_APP_URL  = 'https://script.google.com/macros/s/REEMPLAZAR_CON_TU_DEPLOYMENT_ID/exec';
-  const EOE_TOKEN    = 'REEMPLAZAR_CON_TU_TOKEN_SECRETO';
+  /* ─── CONFIGURACIÓN ─── */
+  const WEB_APP_URL  = 'https://script.google.com/macros/s/AKfycbwiijbZY6RTq0Gx1Oz0D01UR6zyVhcbMZdyWGszVj_rMwV5DIaTad-rY2zaMv1S7UKY3w/exec';
+  const EOE_TOKEN    = 'itat2026';
   const EOE_PASSWORD = 'itat2026';
 
-  /* ─── DATOS DE DEMO ─── */
+  /* ─── DATOS DE DEMO (solo si falla la conexión) ─── */
   const DEMO = [
-    { id:1, fechaHora:'02/05/2026 08:14', nombre:'Lucía M.',     curso:'3° año B', tipo:'Malestar emocional',      urgencia:'Crítico', estado:'En revisión', solicitaContacto:'Sí', descripcion:'Me siento muy sola últimamente. No puedo concentrarme en nada y ya no me dan ganas de venir al colegio.', obs:'' },
-    { id:2, fechaHora:'02/05/2026 09:47', nombre:'Tomás G.',     curso:'1° año A', tipo:'Ciberbullying',            urgencia:'Medio',   estado:'Recibido',    solicitaContacto:'No', descripcion:'Me están mandando memes con mi foto en el grupo de WhatsApp del curso. Me da vergüenza venir.', obs:'' },
-    { id:3, fechaHora:'01/05/2026 14:22', nombre:'Sofía R.',     curso:'5° año C', tipo:'Conflicto escolar',        urgencia:'Bajo',    estado:'Cerrado',     solicitaContacto:'No', descripcion:'Tuve una discusión fuerte con una compañera. Ya está mejor pero quería contarlo.', obs:'Resuelta. Se habló con ambas partes el 01/05.' },
-    { id:4, fechaHora:'30/04/2026 11:08', nombre:'Mateo L.',     curso:'4° año A', tipo:'Riesgo psicosocial',       urgencia:'Crítico', estado:'Derivado',    solicitaContacto:'Sí', descripcion:'Hay algo en casa que me tiene muy angustiado. Necesito hablar con alguien pronto.', obs:'Derivado al servicio de salud mental externo. Familia contactada el 30/04.' },
-    { id:5, fechaHora:'29/04/2026 09:00', nombre:'Valentina P.', curso:'2° año B', tipo:'Necesito hablar con el EOE',urgencia:'Medio',  estado:'En revisión', solicitaContacto:'Sí', descripcion:'No sé bien cómo explicarlo. Me siento rara hace semanas. Me gustaría hablar.', obs:'' },
-    { id:6, fechaHora:'28/04/2026 15:33', nombre:'Agustín T.',   curso:'6° año A', tipo:'Malestar emocional',       urgencia:'Bajo',    estado:'Recibido',    solicitaContacto:'No', descripcion:'Mucha presión por los exámenes finales. Necesito organizarme mejor.', obs:'' },
+    { id:1, fechaHora:'02/05/2026 08:14', nombre:'Lucía M.',     curso:'3° año B', tipo:'Malestar emocional',       urgencia:'Crítico', estado:'En revisión', solicitaContacto:'Sí', descripcion:'Me siento muy sola últimamente. No puedo concentrarme en nada y ya no me dan ganas de venir al colegio.', obs:'' },
+    { id:2, fechaHora:'02/05/2026 09:47', nombre:'Tomás G.',     curso:'1° año A', tipo:'Ciberbullying',             urgencia:'Medio',   estado:'Recibido',    solicitaContacto:'No', descripcion:'Me están mandando memes con mi foto en el grupo de WhatsApp del curso. Me da vergüenza venir.', obs:'' },
+    { id:3, fechaHora:'01/05/2026 14:22', nombre:'Sofía R.',     curso:'5° año C', tipo:'Conflicto escolar',         urgencia:'Bajo',    estado:'Cerrado',     solicitaContacto:'No', descripcion:'Tuve una discusión fuerte con una compañera. Ya está mejor pero quería contarlo.', obs:'Resuelta. Se habló con ambas partes el 01/05.' },
+    { id:4, fechaHora:'30/04/2026 11:08', nombre:'Mateo L.',     curso:'4° año A', tipo:'Riesgo psicosocial',        urgencia:'Crítico', estado:'Derivado',    solicitaContacto:'Sí', descripcion:'Hay algo en casa que me tiene muy angustiado. Necesito hablar con alguien pronto.', obs:'Derivado al servicio de salud mental externo. Familia contactada el 30/04.' },
+    { id:5, fechaHora:'29/04/2026 09:00', nombre:'Valentina P.', curso:'2° año B', tipo:'Necesito hablar con el EOE',urgencia:'Medio',   estado:'En revisión', solicitaContacto:'Sí', descripcion:'No sé bien cómo explicarlo. Me siento rara hace semanas. Me gustaría hablar.', obs:'' },
+    { id:6, fechaHora:'28/04/2026 15:33', nombre:'Agustín T.',   curso:'6° año A', tipo:'Malestar emocional',        urgencia:'Bajo',    estado:'Recibido',    solicitaContacto:'No', descripcion:'Mucha presión por los exámenes finales. Necesito organizarme mejor.', obs:'' },
   ];
 
   let alertas = [];
@@ -612,52 +612,65 @@
     alertas = [];
   });
 
-  /* ─── CARGA ─── */
+  /* ─── CARGA DE ALERTAS DESDE GOOGLE SHEETS ─── */
   async function cargarAlertas() {
     mostrarCarga(true);
 
-    /* MODO REAL — descomentar cuando WEB_APP_URL esté configurada:
     try {
-      const res  = await fetch(`${WEB_APP_URL}?action=getAlertas&token=${encodeURIComponent(EOE_TOKEN)}`);
+      const url = `${WEB_APP_URL}?action=getAlertas&token=${encodeURIComponent(EOE_TOKEN)}`;
+      const res  = await fetch(url);
       const json = await res.json();
-      if (!json.ok) throw new Error(json.error);
-      alertas = json.alertas;
-      document.getElementById('banner-demo').style.display = 'none';
-    } catch(e) {
-      console.error(e);
-      alertas = DEMO.map(a => ({...a}));
-      alert('No se pudo conectar con Google Sheets. Mostrando datos demo.');
-    }
-    */
 
-    /* MODO DEMO */
-    await delay(600);
-    alertas = DEMO.map(a => ({...a}));
+      if (!json.ok) throw new Error(json.error || 'Error del servidor');
+
+      // Convertir los datos de Sheets al formato que usa el panel
+      alertas = json.alertas.map((a, i) => ({
+        id:               a.id || i + 1,
+        fechaHora:        a.fechaHora,
+        nombre:           a.nombre,
+        curso:            a.curso,
+        tipo:             a.tipo,
+        urgencia:         a.urgencia,
+        estado:           a.estado || 'Recibido',
+        solicitaContacto: a.solicitaContacto,
+        descripcion:      a.descripcion,
+        obs:              a.obs || ''
+      }));
+
+      // Ocultar el banner de demo si conectó bien
+      const banner = document.getElementById('banner-demo');
+      if (banner) banner.style.display = 'none';
+
+    } catch(err) {
+      console.error('Error al conectar con Google Sheets:', err);
+      alertas = DEMO.map(a => ({...a}));
+      alert('No se pudo conectar con Google Sheets. Se muestran datos de demostración.');
+    }
 
     mostrarCarga(false);
     renderStats();
     aplicarFiltros();
   }
 
-  function mostrarCarga(v) {
-    document.getElementById('estado-carga').style.display     = v ? 'block' : 'none';
-    document.getElementById('lista-alertas').style.display    = v ? 'none' : 'block';
-  }
-
   const delay = ms => new Promise(r => setTimeout(r, ms));
 
-  /* ─── STATS ─── */
+  function mostrarCarga(v) {
+    document.getElementById('estado-carga').style.display  = v ? 'block' : 'none';
+    document.getElementById('lista-alertas').style.display = v ? 'none'  : 'block';
+  }
+
+  /* ─── ESTADÍSTICAS ─── */
   function renderStats() {
-    const tot   = alertas.length;
-    const crit  = alertas.filter(a => a.urgencia === 'Crítico').length;
-    const med   = alertas.filter(a => a.urgencia === 'Medio').length;
-    const baj   = alertas.filter(a => a.urgencia === 'Bajo').length;
-    const pend  = alertas.filter(a => a.estado === 'Recibido').length;
+    const tot  = alertas.length;
+    const crit = alertas.filter(a => a.urgencia === 'Crítico').length;
+    const med  = alertas.filter(a => a.urgencia === 'Medio').length;
+    const baj  = alertas.filter(a => a.urgencia === 'Bajo').length;
+    const pend = alertas.filter(a => a.estado   === 'Recibido').length;
     document.getElementById('stats').innerHTML = `
-      <div class="stat">          <div class="stat-lbl">📊 Total</div>      <div class="stat-num">${tot}</div>  <div class="stat-desc">alertas recibidas</div></div>
+      <div class="stat">         <div class="stat-lbl">📊 Total</div>       <div class="stat-num">${tot}</div>  <div class="stat-desc">alertas recibidas</div></div>
       <div class="stat critica"> <div class="stat-lbl">🔴 Críticas</div>   <div class="stat-num">${crit}</div> <div class="stat-desc">atención urgente</div></div>
-      <div class="stat media">   <div class="stat-lbl">🟡 Medias</div>    <div class="stat-num">${med}</div>  <div class="stat-desc">seguimiento próximo</div></div>
-      <div class="stat baja">    <div class="stat-lbl">🟢 Bajas</div>     <div class="stat-num">${baj}</div>  <div class="stat-desc">monitorear</div></div>
+      <div class="stat media">   <div class="stat-lbl">🟡 Medias</div>     <div class="stat-num">${med}</div>  <div class="stat-desc">seguimiento próximo</div></div>
+      <div class="stat baja">    <div class="stat-lbl">🟢 Bajas</div>      <div class="stat-num">${baj}</div>  <div class="stat-desc">monitorear</div></div>
       <div class="stat sinrev">  <div class="stat-lbl">📥 Sin revisar</div><div class="stat-num">${pend}</div> <div class="stat-desc">pendientes</div></div>
     `;
   }
@@ -733,44 +746,46 @@
     `).join('');
   }
 
-  /* ─── GUARDAR ─── */
+  /* ─── GUARDAR CAMBIOS ─── */
   async function guardar(id) {
     const est = document.getElementById(`est-${id}`).value;
     const obs = document.getElementById(`obs-${id}`).value;
     const btn = document.getElementById(`bg-${id}`);
     const fb  = document.getElementById(`fb-${id}`);
 
-    btn.disabled = true; btn.textContent = 'Guardando…';
+    btn.disabled      = true;
+    btn.textContent   = 'Guardando…';
 
-    /* MODO REAL:
     try {
       await fetch(`${WEB_APP_URL}?action=updateEstado&token=${encodeURIComponent(EOE_TOKEN)}&id=${id}&estado=${encodeURIComponent(est)}`);
       await fetch(`${WEB_APP_URL}?action=updateObs&token=${encodeURIComponent(EOE_TOKEN)}&id=${id}&obs=${encodeURIComponent(obs)}`);
-    } catch(e) { console.error(e); alert('Error al guardar.'); }
-    */
+    } catch(err) {
+      console.error('Error al guardar:', err);
+    }
 
-    await delay(400);
-    const a = alertas.find(x => x.id === id);
+    // Actualizar en memoria local también
+    const a = alertas.find(x => x.id == id);
     if (a) { a.estado = est; a.obs = obs; }
     renderStats();
 
     fb.style.display = 'block';
     setTimeout(() => { fb.style.display = 'none'; }, 3000);
 
-    btn.disabled = false; btn.innerHTML = '💾 Guardar cambios';
+    btn.disabled    = false;
+    btn.innerHTML   = '💾 Guardar cambios';
   }
 
   /* ─── HELPERS ─── */
-  function clsUrg(u) { return ({Bajo:'bajo',Medio:'medio','Crítico':'critico'})[u] || 'bajo'; }
+  function clsUrg(u) { return ({Bajo:'bajo', Medio:'medio', 'Crítico':'critico'})[u] || 'bajo'; }
 
   function bdgUrg(u) {
-    const ico = {Bajo:'🟢',Medio:'🟡','Crítico':'🔴'};
-    const cls = {Bajo:'bajo',Medio:'medio','Crítico':'critico'};
+    const ico = { Bajo:'🟢', Medio:'🟡', 'Crítico':'🔴' };
+    const cls = { Bajo:'bajo', Medio:'medio', 'Crítico':'critico' };
     return `<span class="badge badge-${cls[u]||'bajo'}">${ico[u]||'⚪'} ${u}</span>`;
   }
 
   function bdgEst(e) {
-    const cls = {Recibido:'recibido','En revisión':'revision',Derivado:'derivado',Cerrado:'cerrado'};
+    const cls = { Recibido:'recibido', 'En revisión':'revision', Derivado:'derivado', Cerrado:'cerrado' };
     return `<span class="badge badge-${cls[e]||'recibido'}">${e}</span>`;
   }
 
